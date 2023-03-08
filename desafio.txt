@@ -1,0 +1,91 @@
+----------------------------------------------------Nivel 1------------------------------------------------------
+                                Verificação, instalação, criação de arquivos pastas
+
+
+a. Verifique qual a configuração completa: Processador, Memória, Discos e SO.
+lscpu
+inxi -v7
+cat /proc/meminfo
+cat /proc/cpuinfo
+
+
+b. Alterar data e hora do sistema para 07/03/2023 19:20 horas.
+date -s "2014-12-25 $(date +%H:%M:%S)"
+timedatectl set-time "2015-12-01"
+
+c. Atualizar repositório de pacotes, fazer uma atualização completa do sistema.
+apt-get update
+apt-get upgrade
+
+d. Instalar os pacotes neofetch, htop, gimp com o gerenciador de pacotes apt
+apt-get install neofetch
+apt-get install htop
+apt-get install gimp
+
+e. Remover o pacote Gimp e todas as suas configurações com uso do apt.
+apt-get remove gimp
+
+f. Incluir o neofetch para inicializar automaticamente cada vez que abrir o terminal.
+echo "neofetch" >> ~/.bashrc
+
+g. Navegue na estrutura de diretório para se chegar na área de trabalho do usuário, crie
+uma pasta chamada projetos e adicione um arquivo de index.html nesta pasta
+
+mkdir projetos
+cd projetos
+touch index.html
+
+h. Programar o computador para desligar automaticamente as 21:50 h.
+
+sudo shutdown -h 21:50 
+
+
+----------------------------------------------------Nivel 2------------------------------------------------------
+Criação, alteração de usuário e grupos, compactação e cópia de arquivos
+
+a. Crie um novo usuário chamado garopaba, defina este usuário para que tenha privilégios
+administrativos.
+
+adduser garopaba -home /home/garopaba
+ 
+sudo usermod -aG sudo garopaba
+ 
+b. Crie um grupo chamado IFSC.
+sudo addgroup −−gid 2000 IFSC
+
+c. Altere o grupo do usuário garopaba para IFSC.
+sudo addgroup garopaba IFSC
+
+d. Altere o dono do arquivo index.html para Garopaba
+
+chown garopaba projetos
+
+e. Altere o grupo do arquivo index para IFSC.
+
+chgrp IFSC index.html
+
+f. Realize um backup completo da pasta projetos usando o tar e gzip
+
+
+----------------------------------------------------Nivel 3------------------------------------------------------
+Alterar permissão de arquivos e pastas e listar e finalizar processos
+a. Altere a permissão do backup criado para que somente o dono tenha acesso total, grupo
+
+e demais usuários não devem possuir permisões para acesso ao arquivo.
+
+b. Abra o firefox por linha de comando. Liste todos os processos abertos do usuário
+Localize o processo firefox e finalize-o
+firefox
+ps -xa | grep "firefox"
+kill <PID>
+
+
+c. Verificar e finalizar processos com uso diferente dos comandos: htop, top, ps e kill
+
+----------------------------------------------------Nivel 4------------------------------------------------------
+Agendamento e Script
+a. Criar um Script e agendar no crontab para que a cada minuto o sistema realize um
+backup compactado da pasta projeto para a área de trabalho.
+b. Jogue todo o conteúdo do arquivo history para um arquivo com seunome.txt na area
+de trabalho e depois publique no sigaa.
+
