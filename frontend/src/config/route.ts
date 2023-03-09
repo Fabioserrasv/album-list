@@ -6,7 +6,7 @@ const basePathname = url.pathname === "/" ? "" : url.pathname;
 export const ROUTE = {
   APP: {
     HOME: `${basePathname}/home`,
-    SIGN_UP: `${basePathname}/sign-up`,
+    SIGN_UP: `${basePathname}/signup`,
     SIGN_IN: `${basePathname}/sign-in`,
     LOGIN: `${basePathname}/login`
   }

@@ -1,5 +1,5 @@
 import { User } from "../entities/user";
-import { getUserAuthenticationInformation, UserServer, userLogin, userLogout } from "../api/auth";
+import { getUserAuthenticationInformation, UserServer, userLogin, userLogout, userSignUp, UserSignUpMessage } from "../api/auth";
 
 function convertUserServerToUser(user: UserServer): User {
   return {
@@ -23,5 +23,21 @@ export class AuthenticationService {
 
   static async logout(): Promise<void> {
     return await userLogout()
+  }
+
+  static async signup(
+    name: string,
+    email: string,
+    password1: string,
+    password2: string
+    ): Promise<UserSignUpMessage> {
+      const response = await userSignUp(
+        name,
+        email,
+        password1,
+        password2
+      );
+
+      return response;
   }
 }

@@ -3,67 +3,61 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from .models import User
-
+import json
 auth = Blueprint('auth', __name__)
+
+from .repositories.user_repository import validate_user_sign_up
 
 @auth.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-
+        values = json.loads(request.data) # checar pq request.form.get não está pegando
+        email = values['email']
+        password = values['password']
+        
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
                 flash('Login feito com sucesso!', category='success')
                 login_user(user, remember=True)
-                return jsonify(user), 200
+                return jsonify({
+                    'email': user.email,
+                    'name': user.first_name
+                }), 200
             else:
                 return jsonify({'message': 'Senha incorreta!'}), 404
         else:
             return jsonify({'message': 'Usuário não encontrado!'}), 404
 
-    return render_template("login.html", user=current_user)
+    # return render_template("login.html", user=current_user)
 
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('auth.login'))
+    return jsonify({'message': 'Deslogado com sucesso!'}), 200
 
-
-@auth.route('/sign-up', methods=['GET', 'POST'])
+@auth.route('/signup', methods=['POST'])
 def sign_up():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        first_name = request.form.get('firstName')
-        password1 = request.form.get('password1')
-        password2 = request.form.get('password2')
+    values = json.loads(request.data) # checar pq request.form.get não está pegando
+    email = values['email']
+    first_name = values['name']
+    password1 = values['password1']
+    password2 = values['password2']
 
-        user = User.query.filter_by(email=email).first()
-        if user:
-            flash('Email já existe.', category='error')
-        elif len(email) < 4:
-            flash('Email deve ter mais de 3 caracteres.', category='error')
-        elif len(first_name) < 2:
-            flash('O nome deve ter mais de 1 caracter.', category='error')
-        elif password1 != password2:
-            flash('Senhas não conferem.', category='error')
-        elif len(password1) < 7:
-            flash('Password must be at least 7 characters.', category='error')
-        else:
-            new_user = User(
-                email=email,
-                first_name=first_name, 
-                password=generate_password_hash(password1, method='sha256')
-            )
+    user = User.query.filter_by(email=email).first()
+    if not validate_user_sign_up(user, values):
+        return jsonify({'message': 'Dados incorretos'}), 400
+    else:
+        new_user = User(
+            email=email,
+            first_name=first_name, 
+            password=generate_password_hash(password1, method='sha256')
+        )
             
-            db.session.add(new_user)
-            db.session.commit()
+        db.session.add(new_user)
+        db.session.commit()
             
-            login_user(new_user, remember=True)
-            flash('Conta criada!', category='success')
-            return redirect(url_for('views.home'))
-
-    return render_template("sign_up.html", user=current_user)
+        login_user(new_user, remember=True)
+        return jsonify({'message': 'Usuário registrado com sucesso'}), 200

@@ -18,6 +18,7 @@ interface AuthProviderProps {
 interface AuthContextInterface {
 	user: User | null;
 	authed: boolean;
+	signup(name: string, email: string, password1: string, password2: string): Promise<void>;
 	login(email: string, password: string): Promise<void>;
 	logout(): Promise<void>;
 }
@@ -44,9 +45,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 					notification.error({
 						message: "Usuário não autenticado",
 						description:
-						"Parece que você não está autenticado. Faça o login novamente",
+							"Parece que você não está autenticado. Faça o login novamente",
 					});
-					navigate(ROUTE.APP.LOGIN);
+					navigate(ROUTE.APP.SIGN_UP);
 				}
 			} finally {
 				setLoading(false);
@@ -54,17 +55,36 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 
 		fecthUserAuthenticationInformation();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	const signup = useCallback(async (name: string, email: string, password1: string, password2: string) => {
+		try {
+			const response = await AuthenticationService.signup(name, email, password1, password2);
+
+			if(response){
+				console.log(response.message);
+			}
+
+		} catch (error: any) {
+			console.log(error);
+			console.log(error.response)
+			setAuthed(false);
+			notification.error({
+				message: "Dados incorretos.",
+				description: "Dados incorretos, tente novamente.",
+			});
+		}
+	}, [])
+
 	const login = useCallback(async (username: string, password: string) => {
-		if(authed) {
+		if (authed) {
 			return;
 		}
 
 		try {
 			const user = await AuthenticationService.login(username, password);
-			
+
 			setUser(user);
 			setAuthed(true);
 
@@ -98,8 +118,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ authed, user, login, logout }}>
-			{loading ? (<PageLoading />) :  children}
+		<AuthContext.Provider value={{ authed, signup, user, login, logout }}>
+			{loading ? (<PageLoading />) : children}
 		</AuthContext.Provider>
 	);
 };

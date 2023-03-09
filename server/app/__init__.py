@@ -9,14 +9,16 @@ from os import path
 
 db = SQLAlchemy()
 DB_NAME = config['DB_NAME']
-
+DB_HOST = config['DB_HOST']
+DB_USER = config['DB_USER']
+DB_PASS = config['DB_PASS']
 
 def create_app():
     app = Flask(__name__)
     CORS(app, supports_credentials=True)
     
     app.config['SECRET_KEY'] = config['SECRET_KEY']
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
     
     db.init_app(app)
     
