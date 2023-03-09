@@ -1,13 +1,12 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-
 from . import db
 from .models import User
 
 auth = Blueprint('auth', __name__)
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         email = request.form.get('email')
@@ -18,11 +17,11 @@ def login():
             if check_password_hash(user.password, password):
                 flash('Login feito com sucesso!', category='success')
                 login_user(user, remember=True)
-                return redirect(url_for('views.home'))
+                return jsonify(user), 200
             else:
-                flash('Senha incorreta!, try again.', category='error')
+                return jsonify({'message': 'Senha incorreta!'}), 404
         else:
-            flash('Email não existe.', category='error')
+            return jsonify({'message': 'Usuário não encontrado!'}), 404
 
     return render_template("login.html", user=current_user)
 

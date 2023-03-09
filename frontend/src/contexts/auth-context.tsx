@@ -1,0 +1,109 @@
+import React, { createContext, useCallback, useEffect, useState, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { message, notification } from "antd";
+
+// import { PageLoading } from "../pages/page-loading/PageLoading";
+
+import { PageLoading } from "../pages/login/Login"
+
+import { User } from "../entities/user";
+import { AuthenticationService } from "../services/authentication-service";
+
+import { ROUTE } from "../config/route";
+
+interface AuthProviderProps {
+	children: React.ReactNode;
+}
+
+interface AuthContextInterface {
+	user: User | null;
+	authed: boolean;
+	login(email: string, password: string): Promise<void>;
+	logout(): Promise<void>;
+}
+
+export const AuthContext = createContext({} as AuthContextInterface);
+export const AuthProvider = ({ children }: AuthProviderProps) => {
+	const [user, setUser] = useState<User | null>(null);
+	const [authed, setAuthed] = useState(false);
+	const [loading, setLoading] = useState(true);
+
+	const location = useLocation()
+	const navigate = useNavigate();
+
+	useEffect(() => {
+		async function fecthUserAuthenticationInformation() {
+			try {
+				setLoading(true);
+				const user = await AuthenticationService.getUserInformation();
+
+				setUser(user);
+				setAuthed(true);
+			} catch (error: any) {
+				if (location.pathname !== ROUTE.APP.LOGIN) {
+					notification.error({
+						message: "Usuário não autenticado",
+						description:
+						"Parece que você não está autenticado. Faça o login novamente",
+					});
+					navigate(ROUTE.APP.LOGIN);
+				}
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		fecthUserAuthenticationInformation();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const login = useCallback(async (username: string, password: string) => {
+		if(authed) {
+			return;
+		}
+
+		try {
+			const user = await AuthenticationService.login(username, password);
+			
+			setUser(user);
+			setAuthed(true);
+
+		} catch (error: any) {
+			console.log(error);
+			console.log(error.response)
+			setAuthed(false);
+			notification.error({
+				message: "Não autorizado",
+				description: "Usuário ou senha incorreto, tente novamente.",
+			});
+		}
+	}, [authed]);
+
+	const logout = useCallback(async () => {
+		try {
+			await AuthenticationService.logout();
+
+			setUser(null);
+			setAuthed(false);
+			navigate(ROUTE.APP.LOGIN);
+		} catch (error: any) {
+			message.error("Ocorreu um error ao realizar o logout")
+			console.log(error)
+		}
+	}, [navigate]);
+
+	const goToLogin = useCallback(async () => {
+		setUser(null);
+		setAuthed(false);
+	}, []);
+
+	return (
+		<AuthContext.Provider value={{ authed, user, login, logout }}>
+			{loading ? (<PageLoading />) :  children}
+		</AuthContext.Provider>
+	);
+};
+
+export function useAuth() {
+	return useContext(AuthContext);
+}
