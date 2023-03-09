@@ -2,7 +2,8 @@ import { apiAxios } from "../infra/apiAxios"
 
 
 export type UserServer = {
-
+	name: string;
+	email: string;
 }
 
 export type UserSignUpMessage = {

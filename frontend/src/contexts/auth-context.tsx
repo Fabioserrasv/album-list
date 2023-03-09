@@ -88,6 +88,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			setUser(user);
 			setAuthed(true);
 
+			navigate(ROUTE.APP.HOME);
+
 		} catch (error: any) {
 			console.log(error);
 			console.log(error.response)

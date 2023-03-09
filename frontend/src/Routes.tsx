@@ -3,6 +3,7 @@ import { useAuth, AuthProvider } from "./contexts/auth-context";
 
 import { Login } from "./pages/login/Login";
 import { Signup } from "./pages/login/Signup";
+import { Home } from "./pages/home/Home";
 
 const ProtectedRoute = () => {
     const { authed } = useAuth();
@@ -20,9 +21,9 @@ export function Routes() {
                 <Router>
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    {/* <Route element={<ProtectedRoute />}>
-          
-                    </Route> */}
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/home" element={<Home />} />
+                    </Route>
                     <Route path="*" element={<p>There's nothing here: 404!</p>} />
                 </Router>
             </AuthProvider>
