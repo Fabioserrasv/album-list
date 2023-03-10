@@ -3,6 +3,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from .models import User
+from .repositories.auth_repository import get_data_from_user
 import json
 auth = Blueprint('auth', __name__)
 
@@ -18,7 +19,6 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
-                flash('Login feito com sucesso!', category='success')
                 login_user(user, remember=True)
                 return jsonify({
                     'email': user.email,
@@ -32,7 +32,7 @@ def login():
     # return render_template("login.html", user=current_user)
 
 
-@auth.route('/logout')
+@auth.get('/logout')
 @login_required
 def logout():
     logout_user()
@@ -44,7 +44,6 @@ def sign_up():
     email = values['email']
     first_name = values['name']
     password1 = values['password1']
-    password2 = values['password2']
 
     user = User.query.filter_by(email=email).first()
     if not validate_user_sign_up(user, values):
@@ -60,4 +59,10 @@ def sign_up():
         db.session.commit()
             
         login_user(new_user, remember=True)
-        return jsonify({'message': 'Usuário registrado com sucesso'}), 200
+        return jsonify(get_data_from_user(current_user)), 200
+
+@auth.get('/user-information')
+@login_required
+def user_information():
+    return jsonify(get_data_from_user(current_user)), 200 
+

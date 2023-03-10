@@ -44,6 +44,7 @@ def create_app():
     @app.after_request
     def after_request_func(response):
         response.headers['Access-Control-Allow-Origin']='http://localhost:3000'
+        response.headers['Access-Control-Allow-Credentials']='true'
         response.headers['Access-Control-Allow-Methods']='GET, POST, PUT, OPTIONS'
         response.headers["Access-Control-Allow-Headers"]="Access-Control-Request-Headers,Access-Control-Allow-Methods,Access-Control-Allow-Headers,Access-Control-Allow-Origin, Origin, X-Requested-With, Content-Type, Accept"
         return response

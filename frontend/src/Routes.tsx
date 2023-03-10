@@ -1,8 +1,8 @@
 import { Routes as Router, Route, BrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { useAuth, AuthProvider } from "./contexts/auth-context";
 
-import { Login } from "./pages/login/Login";
-import { Signup } from "./pages/login/Signup";
+import { Login } from "./pages/auth/login/Login";
+import { Signup } from "./pages/auth/signup/Signup";
 import { Home } from "./pages/home/Home";
 
 const ProtectedRoute = () => {

@@ -2,9 +2,7 @@ import React, { createContext, useCallback, useEffect, useState, useContext } fr
 import { useLocation, useNavigate } from "react-router-dom";
 import { message, notification } from "antd";
 
-// import { PageLoading } from "../pages/page-loading/PageLoading";
-
-import { PageLoading } from "../pages/login/Login"
+import { PageLoading } from "../pages/page-loading/PageLoading";
 
 import { User } from "../entities/user";
 import { AuthenticationService } from "../services/authentication-service";
@@ -47,7 +45,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 						description:
 							"Parece que você não está autenticado. Faça o login novamente",
 					});
-					navigate(ROUTE.APP.SIGN_UP);
+					navigate(ROUTE.APP.LOGIN);
 				}
 			} finally {
 				setLoading(false);
@@ -60,12 +58,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const signup = useCallback(async (name: string, email: string, password1: string, password2: string) => {
 		try {
-			const response = await AuthenticationService.signup(name, email, password1, password2);
+			const user = await AuthenticationService.signup(name, email, password1, password2);
 
-			if(response){
-				console.log(response.message);
-			}
+			setUser(user);
+			setAuthed(true);
 
+			navigate(ROUTE.APP.HOME);
 		} catch (error: any) {
 			console.log(error);
 			console.log(error.response)
