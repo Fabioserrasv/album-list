@@ -1,0 +1,100 @@
+body{
+  background-color: #111827;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+*::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #111827;
+}
+
+*::-webkit-scrollbar {
+  width: 3px;
+  background-color: #F5F5F5;
+  z-index: 0;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    max-height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    align-items: center;
+}
+
+.menu {
+    width: 100vw;
+    height: 50px;
+    background-color: #111827;
+    padding-top: 20px;
+    text-align: center;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 20px;
+    position: absolute;
+}
+
+.menu > div {
+    justify-self: start;
+    display: flex;
+		width: 100%;
+    align-items: center;
+    justify-content: start;
+}
+
+.content {
+    width: 62%;
+    height: 100%;
+    min-height: 1000px;
+    max-height: auto;
+    box-sizing: border-box;
+    padding: 100px 30px 0px 30px;
+}
+
+.navbar{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	width: 100%;
+  flex-direction: row;
+  gap: 60px;
+  list-style: none;
+}
+
+.link{
+  transition: 0.5s;
+  font-family: Torus,Inter,Helvetica Neue,Tahoma,Arial,Hiragino Kaku Gothic ProN,Meiryo,Microsoft YaHei,Apple SD Gothic Neo,sans-serif;
+}
+
+.link:any-link{
+	font-weight: 500;
+  color: #f9f9fa;
+  text-decoration: none;
+}
+
+.link:hover{
+  color: #99aac9;
+}
+
+.logo{
+  font-weight: bolder;
+  color: aqua;
+  margin-left: 10px;
+}
+
+.signout{
+  display: flex;
+  color: white;
+}

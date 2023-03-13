@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 			try {
 				setLoading(true);
 				const user = await AuthenticationService.getUserInformation();
-
+				
 				setUser(user);
 				setAuthed(true);
 			} catch (error: any) {

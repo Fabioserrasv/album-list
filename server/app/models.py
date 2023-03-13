@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     first_name = db.Column(db.String(150))
     album_list = db.relationship('UserAlbumList')
 
+
 class Artist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(150))
