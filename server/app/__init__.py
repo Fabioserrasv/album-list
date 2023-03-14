@@ -18,7 +18,8 @@ def create_app():
     CORS(app, supports_credentials=True)
     
     app.config['SECRET_KEY'] = config['SECRET_KEY']
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{DB_USER}:{DB_PASS}@{DB_HOST}/{DB_NAME}'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     app.config['SESSION_COOKIE_SECURE'] = True
 
     db.init_app(app)
