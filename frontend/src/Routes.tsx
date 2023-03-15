@@ -1,5 +1,6 @@
 import { Routes as Router, Route, BrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { useAuth, AuthProvider } from "./contexts/auth-context";
+import { Album } from "./pages/album/Album";
 
 import { Login } from "./pages/auth/login/Login";
 import { Signup } from "./pages/auth/signup/Signup";
@@ -23,6 +24,7 @@ export function Routes() {
                     <Route path="/signup" element={<Signup />} />
                     <Route element={<ProtectedRoute />}>
                         <Route path="/home" element={<Home />} />
+                        <Route path="/album/:artist/:album" element={<Album />} />
                     </Route>
                     <Route path="*" element={<p>There's nothing here: 404!</p>} />
                 </Router>
