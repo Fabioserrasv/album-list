@@ -1,0 +1,16 @@
+.album_info_grid{
+  display: grid;
+  grid-template-columns: 2fr 5fr;
+  grid-template-rows: repeat(3, auto);
+  grid-template-areas: "foto info"
+                       "foto info"
+                       "foto info";
+}
+
+.foto{
+  grid-area: foto;
+}
+
+.info{
+  grid-area: info;
+}

@@ -1,6 +1,9 @@
 import './page.styles.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/auth-context';
+import { Header } from 'antd/es/layout/layout';
+import { Layout, Menu } from 'antd';
+import type { MenuProps } from 'antd';
 
 type PageProps = {
   children: React.ReactNode | React.ReactNode[];
@@ -11,30 +14,22 @@ type PageProps = {
 export function Page({ children, pageName, isLoading }: PageProps) {
   const { logout } = useAuth();
 
+  const items1: MenuProps['items'] = [
+    {key: 'home', label: <Link to='/home'>Home</Link>},
+    {key: 'list', label: <Link to='/list'>Minha lista</Link>},
+    {key: 'rec', label: <Link to='/rec'>Recomendações</Link>}
+  ]
+
   return (
-    <div className='container'>
-      <div className='menu'>
-        <div>
-          <div className='logo'>
-            Logo
-          </div>
-
-          <div className='navbar'>
-            <Link to="/home" className='link'>Home</Link>
-            <Link to="/home" className='link'>Minha Lista</Link>
-            <Link to="/home" className='link'>Recomendações</Link>
-          </div>
-          
-          <div className='signout'onClick={logout}>
-            <a onClick={logout}>Log out</a>
-          </div>
-
-        </div>
-      </div>
+    <Layout className='container'>
+      <Header className="header">
+        <div className="logo">Logo</div>
+        <Menu defaultSelectedKeys={['home']} theme={'dark'} mode="horizontal" items={items1} />
+      </Header>
 
       <div className='content'>
         {!isLoading && children}
       </div>
-    </div>
+    </Layout>
   )
 }
