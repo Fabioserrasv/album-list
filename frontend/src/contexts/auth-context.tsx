@@ -53,7 +53,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 
 		fecthUserAuthenticationInformation();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const signup = useCallback(async (name: string, email: string, password1: string, password2: string) => {
@@ -123,7 +122,3 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		</AuthContext.Provider>
 	);
 };
-
-export function useAuth() {
-	return useContext(AuthContext);
-}

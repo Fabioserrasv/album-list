@@ -1,6 +1,6 @@
 import './page.styles.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/auth-context';
+import { Link } from 'react-router-dom';
+// import { useAuth } from '../../contexts/auth-context';
 import { Header } from 'antd/es/layout/layout';
 import { Layout, Menu } from 'antd';
 import type { MenuProps } from 'antd';
@@ -11,8 +11,8 @@ type PageProps = {
   isLoading?: boolean;
 }
 
-export function Page({ children, pageName, isLoading }: PageProps) {
-  const { logout } = useAuth();
+export function Page({ children, isLoading }: PageProps) {
+  // const { logout } = useAuth();
 
   const items1: MenuProps['items'] = [
     {key: 'home', label: <Link to='/home'>Home</Link>},

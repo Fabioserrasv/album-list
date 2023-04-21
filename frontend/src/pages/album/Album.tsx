@@ -12,12 +12,12 @@ export function Album() {
   const [currentAlbum, setCurrentAlbum] = useState<AlbumEntity>();
 
   useEffect(() => {
-    async function getInfo() {
-      let ralbum = await LastmService.getAlbumInfo(album!, artist!);
+    async function getInfo(album: string, artist: string) {
+      const ralbum = await LastmService.getAlbumInfo(album, artist);
       setCurrentAlbum(ralbum)
     }
     if (album && artist) {
-      getInfo();
+      getInfo(album, artist);
     }
   }, [album, artist])
   return (
@@ -28,7 +28,7 @@ export function Album() {
         </div>
         <div className="info">
           <Row gutter={[16, 16]}>
-            {currentAlbum?.tracks?.map((track, index) => {
+            {currentAlbum?.tracks?.map((track) => {
               return (
                 <Col span={24} key={track.name}>
                   {track.name}

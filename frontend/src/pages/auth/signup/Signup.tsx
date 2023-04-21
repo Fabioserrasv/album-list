@@ -1,6 +1,5 @@
-import React from "react";
 import { Form, Input, Button, Card } from "antd";
-import { useAuth } from "../../../contexts/auth-context";
+import { useAuth } from "../../../hooks/contexts/useAuth";
 
 export function PageLoading() {
 	return (

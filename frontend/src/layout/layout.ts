@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/named
 import { ColProps, RowProps } from "antd";
 import { Gutter } from "antd/lib/grid/row";
 
