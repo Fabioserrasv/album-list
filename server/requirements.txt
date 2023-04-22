@@ -1,6 +1,1 @@
-flask
-Flask-SQLAlchemy
-flask-login
-python-dotenv
-flask_cors
-pymysql
+django
