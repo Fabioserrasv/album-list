@@ -1,16 +1,27 @@
-.album_info_grid{
+.album_info_grid {
   display: grid;
-  grid-template-columns: 2fr 5fr;
+  grid-template-columns: 3fr 4fr;
   grid-template-rows: repeat(3, auto);
   grid-template-areas: "foto info"
                        "foto info"
                        "foto info";
 }
 
-.foto{
+.foto {
   grid-area: foto;
+  margin: auto; 
 }
 
-.info{
+.foto > img {
+  width: 100%;
+  max-width: 300px;
+}
+
+
+.info {
+  border-left: #ccc solid 2px;
   grid-area: info;
+  
+  text-align: justify;
+  padding: 30px;
 }

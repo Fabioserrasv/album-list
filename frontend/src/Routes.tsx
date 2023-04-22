@@ -21,13 +21,30 @@ const ProtectedRoute = () => {
   return <Outlet />;
 };
 
+const OnlyNotAuthRoute = () => {
+  const { authed } = useAuth();
+  if (authed) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+  return <Outlet />;
+};
+
+
 export function Routes() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Router>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route element={<OnlyNotAuthRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/album/:artist/:album" element={<Album />} />

@@ -7,7 +7,7 @@ export type UserServer = {
 }
 
 export async function getUserAuthenticationInformation(): Promise<UserServer> {
-	const response = await apiAxios.get("/auth/user-information");
+	const response = await apiAxios.get("/api/user");
 	return response.data;
 }
 
@@ -15,20 +15,19 @@ export async function userSignUp(
 	name: string,
 	email: string,
 	password1: string,
-	password2: string
+	_password2: string
 	): Promise<UserServer> {
-	const response = await apiAxios.post("/auth/signup", {
-		name,
+	const response = await apiAxios.post("/api/register", {
+		username: name,
 		email,
-		password1,
-		password2
+		password: password1
 	});
 
 	return response.data;
 }
 
 export async function userLogin(email: string, password: string): Promise<UserServer> {
-	const response = await apiAxios.post("/auth/login", {
+	const response = await apiAxios.post("/api/login", {
 		email,
 		password
 	});
@@ -37,5 +36,5 @@ export async function userLogin(email: string, password: string): Promise<UserSe
 }
 
 export async function userLogout() {
-	await apiAxios.get("/auth/logout");
+	await apiAxios.get("/api/logout");
 }

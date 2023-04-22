@@ -1,11 +1,15 @@
 
-import { Form, Input, Button, Card } from "antd";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Form, Input, Button, Card, message } from "antd";
 
+import { PageLoading } from "../../page-loading/PageLoading";
 import { useAuth } from "../../../hooks/contexts/useAuth";
 
-import './login.style.css';
-import { Link } from "react-router-dom";
 import { ROUTE } from "../../../config/route";
+
+
+import './login.style.css';
 
 type LoginFormatter = {
 	email: string;
@@ -13,49 +17,59 @@ type LoginFormatter = {
 }
 
 export function Login() {
-	const { login } = useAuth()
+	const [isLoadingLogin, setIsLoadingLogin] = useState(false);
+	const { login } = useAuth();
 
 	async function handleUserLogin(data: LoginFormatter) {
-		console.log(data)
-		await login(data.email, data.password);
+		try {
+			setIsLoadingLogin(true);
+			await login(data.email, data.password);
+		} catch(err) {
+			message.error("Não foi possivel fazer o login!");
+		} finally {
+			setIsLoadingLogin(false);
+		}
 	}
 
 	return (
-		<div className="center">
-			<Card title="Login" style={{ width: 400 }}>
-				<Form
-					name="basic"
-					labelCol={{ span: 8 }}
-					wrapperCol={{ span: 16 }}
-					style={{ maxWidth: 600 }}
-					onFinish={handleUserLogin}
-					autoComplete="off"
-				>
-					<Form.Item
-						label="Email"
-						name="email"
-						rules={[{ required: true, message: 'Please input your username!' }]}
+		<>
+			{isLoadingLogin && <PageLoading inOtherPage />}
+			<div className="center">
+				<Card title="Login" style={{ width: 400 }}>
+					<Form
+						name="basic"
+						labelCol={{ span: 8 }}
+						wrapperCol={{ span: 16 }}
+						style={{ maxWidth: 600 }}
+						onFinish={handleUserLogin}
+						autoComplete="off"
 					>
-						<Input />
-					</Form.Item>
+						<Form.Item
+							label="Email"
+							name="email"
+							rules={[{ required: true, message: 'Please input your username!' }]}
+						>
+							<Input />
+						</Form.Item>
 
-					<Form.Item
-						label="Senha"
-						name="password"
-						rules={[{ required: true, message: 'Please input your password!' }]}
-					>
-						<Input.Password />
-					</Form.Item>
+						<Form.Item
+							label="Senha"
+							name="password"
+							rules={[{ required: true, message: 'Please input your password!' }]}
+						>
+							<Input.Password />
+						</Form.Item>
 
 
-					<Form.Item wrapperCol={{ offset: 12, span: 24 }}>
-						<Button type="primary" htmlType="submit">
-							Enviar
-						</Button>
-					</Form.Item>
-					<Link to={ROUTE.APP.SIGN_UP}>Registre-se</Link>
-				</Form>
-			</Card>
-		</div>
+						<Form.Item wrapperCol={{ offset: 12, span: 24 }}>
+							<Button type="primary" htmlType="submit">
+								Enviar
+							</Button>
+						</Form.Item>
+						<Link to={ROUTE.APP.SIGN_UP}>Registre-se</Link>
+					</Form>
+				</Card>
+			</div>
+		</>
 	)
 }

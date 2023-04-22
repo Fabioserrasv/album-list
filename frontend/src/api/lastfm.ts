@@ -18,9 +18,9 @@ export type Track = {
       "rank": number
   },
   "artist": {
-      "url": string;
-      "name": string;
-      "mbid": string;
+    "url": string;
+    "name": string;
+    "mbid": string;
   }
 }
 
@@ -44,6 +44,5 @@ export async function searchAlbum(album: string): Promise<Album[]> {
 
 export async function getAlbumInfo(album: string, artist: string): Promise<Album>{
   const response = await apiLastFm.get(`?method=album.getinfo&artist=${artist}&album=${album}${essentialParameters}`)
-  console.log(JSON.stringify(response.data.album, null, 4))
   return response.data.album
 }

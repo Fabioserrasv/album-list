@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState, useContext } from "react";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { message, notification } from "antd";
 
@@ -57,15 +57,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	const signup = useCallback(async (name: string, email: string, password1: string, password2: string) => {
 		try {
-			const user = await AuthenticationService.signup(name, email, password1, password2);
+			await AuthenticationService.signup(name, email, password1, password2);
 
-			setUser(user);
-			setAuthed(true);
-
-			navigate(ROUTE.APP.HOME);
+			navigate(ROUTE.APP.LOGIN);
 		} catch (error: any) {
-			console.log(error);
-			console.log(error.response)
 			setAuthed(false);
 			notification.error({
 				message: "Dados incorretos.",
@@ -111,10 +106,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 		}
 	}, [navigate]);
 
-	const goToLogin = useCallback(async () => {
-		setUser(null);
-		setAuthed(false);
-	}, []);
+	// const goToLogin = useCallback(async () => {
+	// 	setUser(null);
+	// 	setAuthed(false);
+	// }, []);
 
 	return (
 		<AuthContext.Provider value={{ authed, signup, user, login, logout }}>

@@ -1,1 +1,4 @@
 django
+djangorestoframework
+markdown
+django-filter

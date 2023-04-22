@@ -3,9 +3,9 @@ import { Album, AlbumImage, Track } from "../entities/Album";
 
 function convertTrackServerToTrack(track: TrackServer): Track {
   return {
-    duration: track.duration,
+    duration: track.duration || 0,
     name: track.name,
-    position: track["@attr"].rank
+    position: track["@attr"].rank || 0
   }
 }
 
