@@ -49,3 +49,7 @@ body {
   display: flex;
   color: white;
 }
+
+.signout:hover {
+  color: #2a5ff2 !important;
+}

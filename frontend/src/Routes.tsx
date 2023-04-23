@@ -7,13 +7,14 @@ import { Login } from "./pages/auth/login/Login";
 import { Signup } from "./pages/auth/signup/Signup";
 import { Home } from "./pages/home/Home";
 import { MyListAlbum } from "./pages/my-list-album/MyListAlbum";
+import { ROUTE } from "./config/route";
 
 const ProtectedRoute = () => {
   const { authed } = useAuth();
   if (!authed) {
     return (
       <Navigate
-        to="/login"
+        to={ROUTE.APP.LOGIN}
         replace
       />
     );
@@ -21,35 +22,20 @@ const ProtectedRoute = () => {
 
   return <Outlet />;
 };
-
-const OnlyNotAuthRoute = () => {
-  const { authed } = useAuth();
-  if (authed) {
-    return (
-      <Navigate
-        to="/login"
-        replace
-      />
-    );
-  }
-
-  return <Outlet />;
-};
-
 
 export function Routes() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Router>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path={ROUTE.APP.LOGIN} element={<Login />} />
+          <Route path={ROUTE.APP.SIGN_UP} element={<Signup />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/my-list-album" element={<MyListAlbum />} />
-            <Route path="/album/:artist/:album" element={<Album />} />
+            <Route path={ROUTE.APP.HOME} element={<Home />} />
+            <Route path={ROUTE.APP.MY_LIST_ALBUMS} element={<MyListAlbum />} />
+            <Route path={ROUTE.APP.ALBUM_DETAIL} element={<Album />} />
           </Route>
-          <Route path="*" element={<Navigate to="/login" replace/>} />
+          <Route path="*" element={<Navigate to={ROUTE.APP.LOGIN} replace/>} />
         </Router>
       </AuthProvider>
     </BrowserRouter>

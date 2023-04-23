@@ -9,6 +9,7 @@ import { PageLoading } from "../page-loading/PageLoading";
 import { AlbumService } from "../../services/album-service";
 
 import { ScoreAlbum } from "../../entities/Album";
+import { DYNAMIC_ROUTE } from "../../config/route";
 
 import './my-list-album.style.css';
 
@@ -62,7 +63,7 @@ export function MyListAlbum() {
 									lg={6}
 									xl={4}
 								>
-									<Link to={`/album/${artist.name}/${album.name}`}>
+									<Link to={DYNAMIC_ROUTE.APP.ALBUM_DETAIL(artist.name, album.name)}>
 										<Card
 											className="card-album"
 											cover={<ImageDisc src={url} alt="capa do album" />}

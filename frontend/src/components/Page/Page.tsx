@@ -6,6 +6,7 @@ import { Header } from 'antd/es/layout/layout';
 import { useAuth } from '../../hooks/contexts/useAuth';
 
 import './page.styles.css';
+import { ROUTE } from '../../config/route';
 
 type PageProps = {
   children: React.ReactNode | React.ReactNode[];
@@ -17,8 +18,8 @@ export function Page({ children, isLoading }: PageProps) {
   const { logout } = useAuth();
 
   const items1: MenuProps['items'] = [
-    {key: 'home', label: <Link to='/home'>Home</Link>},
-    {key: 'list', label: <Link to='/my-list-album'>Minha lista</Link>},
+    {key: 'home', label: <Link to={ROUTE.APP.HOME}>Home</Link>},
+    {key: 'list', label: <Link to={ROUTE.APP.MY_LIST_ALBUMS}>Minha lista</Link>},
   ];
 
   return (
@@ -29,7 +30,7 @@ export function Page({ children, isLoading }: PageProps) {
         trigger="click"
       >
         <div className="logo">
-          <Button type="text">
+          <Button className="signout" type="text">
             Logo
           </Button>
         </div>

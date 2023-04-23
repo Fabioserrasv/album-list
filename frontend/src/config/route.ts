@@ -8,12 +8,15 @@ export const ROUTE = {
     HOME: `${basePathname}/home`,
     SIGN_UP: `${basePathname}/signup`,
     SIGN_IN: `${basePathname}/sign-in`,
-    LOGIN: `${basePathname}/login`
+    LOGIN: `${basePathname}/login`,
+  
+    ALBUM_DETAIL: `${basePathname}/album/:artist/:album`,
+    MY_LIST_ALBUMS: `${basePathname}/my-list-albums`
   }
 }
 
 export const DYNAMIC_ROUTE = {
   APP: {
-    
+    ALBUM_DETAIL: (artist: string, album: string) => `${basePathname}/album/${artist}/${album}`
   }
 }

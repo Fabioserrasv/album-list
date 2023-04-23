@@ -10,6 +10,7 @@ import { Album } from "../../entities/Album";
 import { LastmService } from "../../services/lastfm-service";
 
 import { getImageExtraLarge } from "../../utils/utils";
+import { DYNAMIC_ROUTE } from "../../config/route";
 
 import './home.style.css';
 
@@ -52,7 +53,7 @@ export function Home() {
 									lg={6}
 									xl={4}
 								>
-									<Link to={`/album/${album.artist}/${album.name}`}>
+									<Link to={DYNAMIC_ROUTE.APP.ALBUM_DETAIL(album.artist, album.name)}>
 										<Card
 											className="card_album"
 											cover={<ImageDisc src={url} alt="capa do album" />}
