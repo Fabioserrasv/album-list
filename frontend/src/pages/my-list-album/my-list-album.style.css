@@ -1,0 +1,41 @@
+.my-list-album-grid {
+  display: grid;
+  grid-template-columns: 1fr 6fr 1fr;
+  grid-template-rows: repeat(3, auto);
+  grid-template-areas: "le m ld"
+                       "le m ld"
+                       "le m ld";
+}
+
+.le{
+  grid-area: le;
+}
+
+.m{
+  grid-area: m;
+  height: 100%;
+}
+
+.ld{
+  grid-area: ld;
+}
+
+.card-album{
+  margin: '0px 5px 0px 5px';
+}
+
+.div-title{
+  width: 100%;
+  display: flex;
+  justify-content: start;
+}
+
+.div-title > div{
+  width: 30%;
+  text-align: start;
+}
+
+.div-title > div > h2 {
+  font-size: 26px;
+  font-weight: bold;
+}

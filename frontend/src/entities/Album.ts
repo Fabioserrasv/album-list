@@ -7,7 +7,7 @@ export type AlbumImage = {
 }
 
 export type Track = {
-  duration: any;
+  duration: number;
   name: string;
   position: number;
 }
@@ -18,5 +18,19 @@ export type Album = {
   image: Partial<AlbumImage>;
   url: string;
   tracks?: Track[]
+}
+
+export type ScoreAlbum = {
+  score: number;
+  album:{
+    name: string;
+    url: string;
+    imageUrl: string;
+    tracks: Track[];
+  },
+  artist: {
+    name: string,
+    imageUrl: string;
+  }
 }
 

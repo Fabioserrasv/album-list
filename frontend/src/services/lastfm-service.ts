@@ -36,8 +36,8 @@ function convertAlbumServerToAlbum(album: AlbumServer): Album {
 
 export class LastmService{
   static async searchAlbum(album: string): Promise<Album[]>{
-    const albuns = await searchAlbum(album);
-    return albuns.map(convertAlbumServerToAlbum)
+    const albums = await searchAlbum(album);
+    return albums.map(convertAlbumServerToAlbum)
   }
 
   static async getAlbumInfo(album: string, artist: string): Promise<Album>{

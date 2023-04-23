@@ -6,6 +6,7 @@ import { useAuth } from "./hooks/contexts/useAuth";
 import { Login } from "./pages/auth/login/Login";
 import { Signup } from "./pages/auth/signup/Signup";
 import { Home } from "./pages/home/Home";
+import { MyListAlbum } from "./pages/my-list-album/MyListAlbum";
 
 const ProtectedRoute = () => {
   const { authed } = useAuth();
@@ -47,9 +48,10 @@ export function Routes() {
           </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
+            <Route path="/my-list-album" element={<MyListAlbum />} />
             <Route path="/album/:artist/:album" element={<Album />} />
           </Route>
-          <Route path="*" element={<p>{"There's nothing here: 404!"}</p>} />
+          <Route path="*" element={<Navigate to="/login" replace/>} />
         </Router>
       </AuthProvider>
     </BrowserRouter>

@@ -16,9 +16,8 @@ export function Page({ children, isLoading }: PageProps) {
 
   const items1: MenuProps['items'] = [
     {key: 'home', label: <Link to='/home'>Home</Link>},
-    {key: 'list', label: <Link to='/list'>Minha lista</Link>},
-    {key: 'rec', label: <Link to='/rec'>Recomendações</Link>}
-  ]
+    {key: 'list', label: <Link to='/my-list-album'>Minha lista</Link>},
+  ];
 
   return (
     <Layout className='container'>

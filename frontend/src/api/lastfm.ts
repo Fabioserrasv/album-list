@@ -8,14 +8,14 @@ export type AlbumImage = {
 
 export type Track = {
   "streamable": {
-      "fulltrack": string;
-      "#text": string;
+    "fulltrack": string;
+    "#text": string;
   },
   "duration": any,
   "url": string;
   "name": string;
   "@attr": {
-      "rank": number
+    "rank": number
   },
   "artist": {
     "url": string;

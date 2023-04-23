@@ -1,21 +1,27 @@
 import { KeyboardEvent, useState } from "react";
-import { Card, Col, Divider, Input, Row } from "antd";
-import { Page } from "../../components/Page/Page";
-import './home.style.css';
-
-import { LastmService } from "../../services/lastfm-service";
 import { Link } from "react-router-dom";
-import { getImageExtraLarge } from "../../utils/utils";
+import { Card, Col, Divider, Input, Row } from "antd";
+
+import { ImageDisc } from "../../components/ImageDisc/ImageDisc";
+import { Page } from "../../components/Page/Page";
+
 import { Album } from "../../entities/Album";
 
+import { LastmService } from "../../services/lastfm-service";
+
+import { getImageExtraLarge } from "../../utils/utils";
+
+import './home.style.css';
+
+
 export function Home() {
-	const [albuns, setAlbuns] = useState<Album[]>([]);
+	const [albums, setalbums] = useState<Album[]>([]);
 
 	async function handleSearchAlbum(event: KeyboardEvent<HTMLInputElement>) {
-		const albuns = await LastmService.searchAlbum(event.currentTarget.value);
-		setAlbuns(albuns);
+		const albums = await LastmService.searchAlbum(event.currentTarget.value);
+		setalbums(albums);
 	}
-	console.log(albuns);
+
 	return (
 		<Page>
 			<div className="home_grid">
@@ -35,7 +41,7 @@ export function Home() {
 					</div>
 					<Divider />
 					<Row gutter={[16, 16]}>
-						{albuns.map((album) => {
+						{albums.map((album) => {
 							const url = getImageExtraLarge(album.image);
 							return (
 								<Col 
@@ -49,7 +55,7 @@ export function Home() {
 									<Link to={`/album/${album.artist}/${album.name}`}>
 										<Card
 											className="card_album"
-											cover={<img src={url} alt="capa do album" />}
+											cover={<ImageDisc src={url} alt="capa do album" />}
 										>
 											<p>{album.artist} - {album.name}</p>
 										</Card>

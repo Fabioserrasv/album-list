@@ -1,35 +1,82 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom"
-import { Col, Row, InputNumber, Form, Button } from "antd";
+import { Col, Row, InputNumber, Form, Button, message } from "antd";
 
 import { Page } from "../../components/Page/Page";
+import { ImageDisc } from "../../components/ImageDisc/ImageDisc";
+
+import { PageLoading } from "../page-loading/PageLoading";
 
 import { Album as AlbumEntity } from "../../entities/Album";
-import { LastmService } from "../../services/lastfm-service";
-import { getImageExtraLarge } from "../../utils/utils";
 
+import { useErrorApi } from "../../hooks/useErrorApi";
+
+import { LastmService } from "../../services/lastfm-service";
 import { AlbumService } from "../../services/album-service";
 
-import ImageDisco from "../../assets/images/disco.png";
+import { widthOneHundredPercent } from "../../layout/layout";
+
+import { getImageExtraLarge } from "../../utils/utils";
+import { HttpStatus } from "../../utils/http-status";
 
 import "./album.styles.css";
-import { widthOneHundredPercent } from "../../layout/layout";
 
 type FormatterSendScoreAlbum = {
   score: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
+function emptyFunction(): void {}
+
 export function Album() {
   const { album, artist } = useParams();
+  
   const [currentAlbum, setCurrentAlbum] = useState<AlbumEntity>();
+  const [isLoadingAlbum, setIsLoadingAlbum] = useState<boolean>(true);
+
+  const [score, setScore] = useState<number>();
+  const [isLoadingScore, setIsLoadingScore] = useState<boolean>(true);
+
+  const isLoadingPage = isLoadingAlbum || isLoadingScore;
+
+  const handleErrorApiAlbumScore = useErrorApi({
+    [HttpStatus.NOT_FOUND]: emptyFunction,
+    "DEFAULT": () => {
+      message.error("Não possivel buscar a nota do Album");
+    }
+  }, []);
 
   useEffect(() => {
     async function getInfo(album: string, artist: string) {
-      const ralbum = await LastmService.getAlbumInfo(album, artist);
-      setCurrentAlbum(ralbum)
+      try {
+        setIsLoadingAlbum(true);
+        const ralbum = await LastmService.getAlbumInfo(album, artist);
+        setCurrentAlbum(ralbum);
+      } catch(err) {
+        message.error("Não possivel carregar as informações do Album");
+      } finally {
+        setIsLoadingAlbum(false);
+      }
     }
+
+    async function getScoreAlbum(album: string, artist: string) {
+      try {
+        setIsLoadingScore(true);
+        const score = await AlbumService.getScore(album, artist);
+        setScore(score === 5 ? undefined : score);
+      } catch(err: any) {
+        handleErrorApiAlbumScore(err);
+      } finally {
+        setIsLoadingScore(false);
+      }
+    }
+
     if (album && artist) {
       getInfo(album, artist);
+      getScoreAlbum(album, artist);
+    } else {
+      setIsLoadingAlbum(false);
+      setIsLoadingScore(false);
     }
   }, [album, artist]);
 
@@ -39,16 +86,19 @@ export function Album() {
     AlbumService.sendScore(data.score, currentAlbum);
   }, [currentAlbum]);
 
+  if (isLoadingPage) {
+    return (
+      <PageLoading />
+    );
+  }
+
   return (
     <Page>
       <div className="album_info_grid">
         <div className="foto">
-          <img
+          <ImageDisc
             src={getImageExtraLarge(currentAlbum?.image || {})}
             alt=""
-            onError={(event) => {
-              event.currentTarget.src = ImageDisco;
-            }}
           />
 
           <Form
@@ -65,6 +115,7 @@ export function Album() {
                   name="score"
                   rules={[{ required: true, message: 'Por favor selecione um nota!' }]}
                   style={widthOneHundredPercent}
+                  initialValue={score}
                 >
                   <InputNumber
                     style={widthOneHundredPercent}
@@ -85,13 +136,11 @@ export function Album() {
         </div>
         <div className="info">
           <Row gutter={[16, 16]}>
-            {currentAlbum?.tracks?.map((track) => {
-              return (
-                <Col span={24} key={track.name}>
-                  {track.name}
-                </Col>
-              )
-            })}
+            {currentAlbum?.tracks?.map((track) => (
+              <Col span={24} key={track.name}>
+                {track.name}
+              </Col>
+            ))}
           </Row>
         </div>
 
