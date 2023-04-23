@@ -25,3 +25,11 @@
   text-align: justify;
   padding: 30px;
 }
+
+.input-score {
+  margin-top: 20px;
+}
+
+.input-score button {
+  width: 100%;
+} 

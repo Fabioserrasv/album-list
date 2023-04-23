@@ -33,8 +33,16 @@ body {
 
 .logo {
   float: left;
-  margin: 16px 24px 16px 0;
-  background: rgba(255, 255, 255, 0.3);
+  margin: 0 24px 0 0;
+  padding: 0 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  color: #F5F5F5;
+
+  height: 100%;
+  width: 30px;
 }
 
 .signout {

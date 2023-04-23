@@ -8,9 +8,12 @@ import { Album as AlbumEntity } from "../../entities/Album";
 import { LastmService } from "../../services/lastfm-service";
 import { getImageExtraLarge } from "../../utils/utils";
 
-import { sendAlbum } from "../../api/album";
+import { AlbumService } from "../../services/album-service";
+
+import ImageDisco from "../../assets/images/disco.png";
 
 import "./album.styles.css";
+import { widthOneHundredPercent } from "../../layout/layout";
 
 type FormatterSendScoreAlbum = {
   score: number;
@@ -33,27 +36,20 @@ export function Album() {
   const handleSendScoreAlbum = useCallback(async (data: FormatterSendScoreAlbum) => {
     if (!currentAlbum) return;
     
-  
-    sendAlbum({
-      score: data.score,
-      artist: {
-        name: currentAlbum.artist,
-        image_url: getImageExtraLarge(currentAlbum?.image || {}),
-      },
-      album: {
-        name: currentAlbum.name,
-        image_url: getImageExtraLarge(currentAlbum?.image || {}),
-        url: currentAlbum.url,
-        tracks: currentAlbum.tracks || []
-      }
-    })
+    AlbumService.sendScore(data.score, currentAlbum);
   }, [currentAlbum]);
 
   return (
     <Page>
       <div className="album_info_grid">
         <div className="foto">
-          <img src={getImageExtraLarge(currentAlbum?.image || {})} alt="" />
+          <img
+            src={getImageExtraLarge(currentAlbum?.image || {})}
+            alt=""
+            onError={(event) => {
+              event.currentTarget.src = ImageDisco;
+            }}
+          />
 
           <Form
 						name="basic"
@@ -63,19 +59,27 @@ export function Album() {
             onFinish={handleSendScoreAlbum}
 						autoComplete="off"
 					>
-						<Form.Item
-							label="Nota"
-							name="score"
-							rules={[{ required: true, message: 'Por favor selecione um nota!' }]}
-						>
-							<InputNumber />
-						</Form.Item>
-
-						<Form.Item>
-							<Button type="primary" htmlType="submit">
-								Enviar
-							</Button>
-						</Form.Item>
+            <Row className="input-score">
+              <Col span={12}>
+                <Form.Item
+                  name="score"
+                  rules={[{ required: true, message: 'Por favor selecione um nota!' }]}
+                  style={widthOneHundredPercent}
+                >
+                  <InputNumber
+                    style={widthOneHundredPercent}
+                    placeholder="Nota"
+                    min={0}
+                    max={10}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Button type="primary" htmlType="submit">
+                  Enviar
+                </Button>
+              </Col>
+            </Row>
 					</Form>
 
         </div>

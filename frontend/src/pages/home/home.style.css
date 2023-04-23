@@ -1,6 +1,6 @@
 .home_grid{
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 1fr 6fr 1fr;
   grid-template-rows: repeat(3, auto);
   grid-template-areas: "le m ld"
                        "le m ld"

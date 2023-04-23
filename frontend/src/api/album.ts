@@ -1,18 +1,18 @@
 import { apiAxios } from "../infra/apiAxios";
 
-type Track = {
+export type TrackServer = {
   name: string;
   duration: number;
   position: number;
 }
 
-type SendScoreAlbum = {
+export type AlbumServer = {
   score: number;
   album:{
     name: string;
     url: string;
     image_url: string;
-    tracks: Track[];
+    tracks: TrackServer[];
   },
   artist: {
     name: string,
@@ -20,8 +20,6 @@ type SendScoreAlbum = {
   },
 }
 
-
-
-export async function sendAlbum(data: SendScoreAlbum): Promise<void> {
+export async function sendScoreAlbum(data: AlbumServer): Promise<void> {
 	await apiAxios.post("/album/score", data);
 }

@@ -38,7 +38,14 @@ export function Home() {
 						{albuns.map((album) => {
 							const url = getImageExtraLarge(album.image);
 							return (
-								<Col span={6} key={album.url}>
+								<Col 
+									key={album.url}
+									xs={24}
+									sm={12}
+									md={8}
+									lg={6}
+									xl={4}
+								>
 									<Link to={`/album/${album.artist}/${album.name}`}>
 										<Card
 											className="card_album"

@@ -23,7 +23,9 @@ export function Page({ children, isLoading }: PageProps) {
   return (
     <Layout className='container'>
       <Header className="header">
-        <div className="logo">Logo</div>
+        <div className="logo">
+          Logo
+        </div>
         <Menu defaultSelectedKeys={['home']} theme={'dark'} mode="horizontal" items={items1} />
       </Header>
 
