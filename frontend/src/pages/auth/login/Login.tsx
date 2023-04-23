@@ -55,7 +55,10 @@ export function Login() {
 						<Form.Item
 							label="Senha"
 							name="password"
-							rules={[{ required: true, message: 'Please input your password!' }]}
+							rules={[
+								{ required: true, message: 'Please input your password!' },
+								{ min: 8, message: "12"}
+							]}
 						>
 							<Input.Password />
 						</Form.Item>

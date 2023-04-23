@@ -1,9 +1,11 @@
-import './page.styles.css';
 import { Link } from 'react-router-dom';
-// import { useAuth } from '../../contexts/auth-context';
-import { Header } from 'antd/es/layout/layout';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Popover, Button } from 'antd';
 import type { MenuProps } from 'antd';
+import { Header } from 'antd/es/layout/layout';
+
+import { useAuth } from '../../hooks/contexts/useAuth';
+
+import './page.styles.css';
 
 type PageProps = {
   children: React.ReactNode | React.ReactNode[];
@@ -12,7 +14,7 @@ type PageProps = {
 }
 
 export function Page({ children, isLoading }: PageProps) {
-  // const { logout } = useAuth();
+  const { logout } = useAuth();
 
   const items1: MenuProps['items'] = [
     {key: 'home', label: <Link to='/home'>Home</Link>},
@@ -22,10 +24,18 @@ export function Page({ children, isLoading }: PageProps) {
   return (
     <Layout className='container'>
       <Header className="header">
+      <Popover
+        content={<Button type="link" onClick={logout}>Logout</Button>}
+        trigger="click"
+      >
         <div className="logo">
-          Logo
+          <Button type="text">
+            Logo
+          </Button>
         </div>
-        <Menu defaultSelectedKeys={['home']} theme={'dark'} mode="horizontal" items={items1} />
+      </Popover>
+        
+        <Menu theme={'dark'} mode="horizontal" items={items1} />
       </Header>
 
       <div className='content'>

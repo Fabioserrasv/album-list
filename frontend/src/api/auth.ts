@@ -36,5 +36,5 @@ export async function userLogin(email: string, password: string): Promise<UserSe
 }
 
 export async function userLogout() {
-	await apiAxios.get("/api/logout");
+	await apiAxios.post("/api/logout");
 }

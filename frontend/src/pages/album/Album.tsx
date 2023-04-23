@@ -63,7 +63,7 @@ export function Album() {
       try {
         setIsLoadingScore(true);
         const score = await AlbumService.getScore(album, artist);
-        setScore(score === 5 ? undefined : score);
+        setScore(score);
       } catch(err: any) {
         handleErrorApiAlbumScore(err);
       } finally {
@@ -83,7 +83,8 @@ export function Album() {
   const handleSendScoreAlbum = useCallback(async (data: FormatterSendScoreAlbum) => {
     if (!currentAlbum) return;
     
-    AlbumService.sendScore(data.score, currentAlbum);
+    await AlbumService.sendScore(data.score, currentAlbum);
+    message.success("Nota do Albúm salva!");
   }, [currentAlbum]);
 
   if (isLoadingPage) {

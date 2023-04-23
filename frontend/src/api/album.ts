@@ -23,3 +23,13 @@ export type AlbumServer = {
 export async function sendScoreAlbum(data: AlbumServer): Promise<void> {
 	await apiAxios.post("/album/score", data);
 }
+
+export async function getAlbums(): Promise<AlbumServer[]> {
+  const response = await apiAxios.get("/album/user-album-list");
+  return response.data;
+}
+
+export async function getAlbumInfo(album: string, artist: string): Promise<AlbumServer>{
+  const response = await apiAxios.get(`/album/album-info?album=${album}&artist=${artist}`);
+  return response.data
+}

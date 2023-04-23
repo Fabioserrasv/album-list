@@ -1,4 +1,4 @@
-import { AlbumServer, sendScoreAlbum, TrackServer } from "../api/album";
+import { AlbumServer, sendScoreAlbum, TrackServer, getAlbums as getAlbumsServer, getAlbumInfo } from "../api/album";
 import { Album, ScoreAlbum, Track } from "../entities/Album";
 import { getImageExtraLarge } from "../utils/utils";
 
@@ -50,36 +50,6 @@ function convertAlbumServerToScoreAlbum({
   }
 }
 
-async function testAlbumServers(): Promise<AlbumServer[]> {
-  return [
-    {
-      score: 5,
-      artist: {
-        name: "NCT 127",
-        image_url: "",
-      },
-      album: {
-        image_url: "",
-        name: "NCT #127",
-        tracks: [],
-        url: "oioi oioii"
-      }
-    },
-    {
-      score: 6,
-      artist: {
-        name: "Odd Future",
-        image_url: "",
-      },
-      album: {
-        image_url: "",
-        name: "12 Odd Future Songs",
-        tracks: [],
-        url: "oioi oioii"
-      }
-    }
-  ]
-}
 
 export class AlbumService {
   static async sendScore(score: number, album: Album) {
@@ -88,11 +58,12 @@ export class AlbumService {
   }
 
   static async getAlbums(): Promise<ScoreAlbum[]> {
-    const albums = await testAlbumServers();
+    const albums = await getAlbumsServer();
     return albums.map(convertAlbumServerToScoreAlbum);
   }
 
-  static async getScore(album: string, artist: string): Promise<number> {  
-    return 6;
+  static async getScore(album: string, artist: string): Promise<number> { 
+    const albumServer = await getAlbumInfo(album, artist);
+    return albumServer.score;
   }
 }

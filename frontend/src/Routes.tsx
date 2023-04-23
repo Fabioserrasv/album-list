@@ -42,10 +42,8 @@ export function Routes() {
     <BrowserRouter>
       <AuthProvider>
         <Router>
-          <Route element={<OnlyNotAuthRoute />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/my-list-album" element={<MyListAlbum />} />

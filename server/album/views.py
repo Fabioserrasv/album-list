@@ -4,7 +4,7 @@ from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
-
+from .serializers import convertUserAlbumList
 # Create your views here.
 
 class AlbumRegister(APIView):
@@ -21,7 +21,7 @@ class AlbumRegister(APIView):
     
     album = Album.objects.filter(name=data['album']['name']).last()
     if not album:
-      album = Album(name=data['album']['name'], artist=artist, image_url=data['album']['image_url'])
+      album = Album(name=data['album']['name'], artist=artist, image_url=data['album']['image_url'], url=data['album']['url'])
       album.save()
       for track in data['album']['tracks']:
         album.song_set.create(name=track['name'], artist=artist, duration=track['duration'], position=track['position'])
@@ -36,9 +36,38 @@ class AlbumRegister(APIView):
     score.save()
     return Response(data, status=status.HTTP_200_OK)
 
-# class UserAlbumList(APIView):
-#   def get(self, request):
+class UserAlbumList(APIView):
+  permission_classes = (permissions.IsAuthenticated,)
+  authentication_classes = (SessionAuthentication,)
+
+  def get(self, request):
+    albuns = UserAlbuns.objects.filter(user=request.user)
+    result = [convertUserAlbumList(x) for x in albuns]
+
+    return Response(result, status=status.HTTP_200_OK)
+
+class AlbumInfo(APIView):
+  permission_classes = (permissions.IsAuthenticated,)
+  authentication_classes = (SessionAuthentication,)
+
+  def get(self, request):
+
+    artist_name = request.GET['artist']
+    album_name = request.GET['album']
+
+    artist = Artist.objects.filter(name=artist_name).last()
+    if not artist:
+      return Response({}, status=status.HTTP_404_NOT_FOUND)
     
+    album = Album.objects.filter(name=album_name, artist=artist).last()
+    result = {}
+    
+    if album:
+      result = UserAlbuns.objects.filter(user=request.user, album=album).last()
+      result = convertUserAlbumList(result)
+      return Response(result, status=status.HTTP_200_OK)
+    
+    return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 """
 {

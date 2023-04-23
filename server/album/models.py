@@ -9,6 +9,7 @@ class Artist(models.Model):
     
 class Album(models.Model):
   name = models.CharField(max_length=255)
+  url  = models.CharField(max_length=1000)
   image_url = models.CharField(max_length=1000)
   tags = models.CharField(max_length=1000)
   artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
@@ -17,6 +18,9 @@ class UserAlbuns(models.Model):
   album = models.ForeignKey(Album, on_delete=models.CASCADE)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   score = models.FloatField(default=0.00)
+
+  def __str__(self) -> str:
+    return str(dir(self))
 
 class Song(models.Model):
   name = models.CharField(max_length=255)
