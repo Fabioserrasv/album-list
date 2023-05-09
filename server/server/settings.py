@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'user_api.apps.UserApiConfig',
-    'album.apps.AlbumConfig'
+    'album.apps.AlbumConfig',
+    'comments.apps.CommentsConfig'
 ]
 
 MIDDLEWARE = [
