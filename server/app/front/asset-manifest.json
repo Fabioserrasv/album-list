@@ -1,0 +1,15 @@
+{
+  "main.css": "http://127.0.0.1:5000/app/static/css/main.62950b87.chunk.css",
+  "main.js": "http://127.0.0.1:5000/app/static/js/main.d7871daf.chunk.js",
+  "main.js.map": "http://127.0.0.1:5000/app/static/js/main.d7871daf.chunk.js.map",
+  "static/js/1.dbec0907.chunk.js": "http://127.0.0.1:5000/app/static/js/1.dbec0907.chunk.js",
+  "static/js/1.dbec0907.chunk.js.map": "http://127.0.0.1:5000/app/static/js/1.dbec0907.chunk.js.map",
+  "static/js/2.dacadbe5.chunk.js": "http://127.0.0.1:5000/app/static/js/2.dacadbe5.chunk.js",
+  "static/js/2.dacadbe5.chunk.js.map": "http://127.0.0.1:5000/app/static/js/2.dacadbe5.chunk.js.map",
+  "runtime~main.js": "http://127.0.0.1:5000/app/static/js/runtime~main.9f4cc03e.js",
+  "runtime~main.js.map": "http://127.0.0.1:5000/app/static/js/runtime~main.9f4cc03e.js.map",
+  "static/css/main.62950b87.chunk.css.map": "http://127.0.0.1:5000/app/static/css/main.62950b87.chunk.css.map",
+  "index.html": "http://127.0.0.1:5000/app/index.html",
+  "precache-manifest.957f7d426fccc3bb637fe15b7efbf2ae.js": "http://127.0.0.1:5000/app/precache-manifest.957f7d426fccc3bb637fe15b7efbf2ae.js",
+  "service-worker.js": "http://127.0.0.1:5000/app/service-worker.js"
+}

@@ -1,4 +1,6 @@
-django
-djangorestoframework
-markdown
-django-filter
+flask
+Flask-SQLAlchemy
+flask-login
+python-dotenv
+flask_cors
+pymysql
