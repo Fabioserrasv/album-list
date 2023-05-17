@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Comment
-from album.models import Album
+from .models import Comment, Likes
+from album.models import Album, Artist
 from rest_framework import permissions, status
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
@@ -40,3 +40,26 @@ class ListAlbumComments(APIView):
     all_comments = [convertComments(x) for x in comments]
     
     return Response(all_comments, status=status.HTTP_200_OK)
+
+
+class PutLike(APIView):
+  def post(self, request):
+    data = request.data
+
+    comment = Comment.objects.filter(id=data['comment_id']).last()
+    
+    if data['like_type']:
+      like_type = Likes.TypeLike.UP_LIKE if data['like_type'] == 'like' else Likes.TypeLike.DOWN_LIKE
+  
+    current = Likes.objects.filter(comment=comment, user=request.user).last()
+
+    if not current:
+      like = Likes(user=request.user, type=like_type, comment=comment)
+      like.save()
+    elif current.type == like_type:
+      current.delete()
+    else:
+      current.type = like_type
+      current.save()
+    
+    return Response({}, status=status.HTTP_200_OK)

@@ -51,3 +51,19 @@ class UserView(APIView):
 		print(serializer.data)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
 
+	def put(self, request):
+		data = request.data
+		print(data)
+   
+
+class UserChangePicture(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+	def post(self, request):
+		files = request.FILES
+		image = files.get("image")
+		request.user.profile_pic = image
+		request.user.save()
+		return Response(status=status.HTTP_200_OK)
+
+		

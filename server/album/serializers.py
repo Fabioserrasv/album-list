@@ -1,16 +1,16 @@
 from rest_framework import serializers
 
-def convertUserAlbumList(data):
+def convertUserAlbumList(album, score):
   return {
-    "score": data.score,
+    "score": score,
     "artist": {
-      "name": data.album.artist.name,
-      "image_url": data.album.artist.image_url,
+      "name": album.artist.name,
+      "image_url": album.artist.image_url,
     },
     "album": {
-      "image_url": data.album.image_url,
-      "name": data.album.name,
+      "image_url": album.image_url,
+      "name": album.name,
       "tracks": [],
-      "url": data.album.url,
+      "url": album.url,
     }
   }

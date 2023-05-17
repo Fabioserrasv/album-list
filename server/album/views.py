@@ -5,12 +5,15 @@ from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from .serializers import convertUserAlbumList
+from server.decorators import validator
+from .album_validator import *
 # Create your views here.
 
 class AlbumRegister(APIView):
   permission_classes = (permissions.IsAuthenticated,)
   authentication_classes = (SessionAuthentication,)
   
+  @validator(data_score)
   def post(self, request):
     data = request.data
 
@@ -42,7 +45,7 @@ class UserAlbumList(APIView):
 
   def get(self, request):
     albuns = UserAlbuns.objects.filter(user=request.user)
-    result = [convertUserAlbumList(x) for x in albuns]
+    result = [convertUserAlbumList(x.album, x.score) for x in albuns]
 
     return Response(result, status=status.HTTP_200_OK)
 
@@ -50,6 +53,7 @@ class AlbumInfo(APIView):
   permission_classes = (permissions.IsAuthenticated,)
   authentication_classes = (SessionAuthentication,)
 
+  @validator(data_album_info)
   def get(self, request):
 
     artist_name = request.GET['artist']
@@ -64,7 +68,10 @@ class AlbumInfo(APIView):
     
     if album:
       result = UserAlbuns.objects.filter(user=request.user, album=album).last()
-      result = convertUserAlbumList(result)
+      if result:
+        result = convertUserAlbumList(result.album, result.score)
+      else:
+        result = convertUserAlbumList(album, None)
       return Response(result, status=status.HTTP_200_OK)
     
     return Response({}, status=status.HTTP_404_NOT_FOUND)

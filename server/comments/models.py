@@ -18,7 +18,7 @@ class Comment(models.Model):
       child.get_tree()
 
 class Likes(models.Model):
-  class TypeLike(models.TextChoices):
+  class TypeLike(models.IntegerChoices):
     UP_LIKE = 1, _("up_like")
     DOWN_LIKE = -1, _("down_like")
     
