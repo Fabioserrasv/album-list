@@ -6,6 +6,7 @@ from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerial
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
 
+UserModel = get_user_model()
 
 class UserRegister(APIView):
 	permission_classes = (permissions.AllowAny,)
@@ -53,8 +54,11 @@ class UserView(APIView):
 
 	def put(self, request):
 		data = request.data
-		print(data)
-   
+		request.user.about_me = data['about_me']
+		if not UserModel.objects.filter(username=data['username']):
+			request.user.username = data['username']
+		request.user.save()
+		return Response({},status=status.HTTP_200_OK)
 
 class UserChangePicture(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
