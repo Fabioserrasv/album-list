@@ -45,7 +45,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 						description:
 							"Parece que você não está autenticado. Faça o login novamente",
 					});
-					navigate(ROUTE.APP.LOGIN);
 				}
 			} finally {
 				setLoading(false);
@@ -79,9 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 			setUser(user);
 			setAuthed(true);
-
-			navigate(ROUTE.APP.HOME);
-
 		} catch (error: any) {
 			console.log(error);
 			console.log(error.response)
@@ -99,7 +95,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 			setUser(null);
 			setAuthed(false);
-			navigate(ROUTE.APP.LOGIN);
 		} catch (error: any) {
 			message.error("Ocorreu um error ao realizar o logout")
 			console.log(error)

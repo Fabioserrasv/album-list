@@ -1,45 +1,32 @@
-import { Routes as Router, Route, BrowserRouter, Navigate, Outlet } from "react-router-dom";
-import { AuthProvider } from "./contexts/auth-context";
-import { Album } from "./pages/album/Album";
-import { useAuth } from "./hooks/contexts/useAuth";
+  import { Routes as Router, Route, BrowserRouter, Navigate } from "react-router-dom";
+  import { AuthProvider } from "./contexts/auth-context";
+  import { Album } from "./pages/album/Album";
 
-import { Login } from "./pages/auth/login/Login";
-import { Signup } from "./pages/auth/signup/Signup";
-import { Home } from "./pages/home/Home";
-import { MyListAlbum } from "./pages/my-list-album/MyListAlbum";
-import { ROUTE } from "./config/route";
-import { Profile } from "./pages/profile/Profile";
+  import { Login } from "./pages/auth/login/Login";
+  import { Signup } from "./pages/auth/signup/Signup";
+  import { Home } from "./pages/home/Home";
+  import { MyListAlbum } from "./pages/my-list-album/MyListAlbum";
+  import { ROUTE } from "./config/route";
+  import { Profile } from "./pages/profile/Profile";
+  import { PublicRoute } from "./components/route/PublicRoute";
+  import { PrivateRoute } from "./components/route/PrivateRoute";
+  import { PageLoading } from "./pages/page-loading/PageLoading";
 
-const ProtectedRoute = () => {
-  const { authed } = useAuth();
-  if (!authed) {
+  export function Routes() {
     return (
-      <Navigate
-        to={ROUTE.APP.LOGIN}
-        replace
-      />
+      <BrowserRouter>
+        <AuthProvider>
+          <Router>
+            <Route index element={<PageLoading />} />
+            <Route path={ROUTE.APP.LOGIN} element={<PublicRoute><Login /></PublicRoute>} />
+            <Route path={ROUTE.APP.SIGN_UP} element={<PublicRoute><Signup /></PublicRoute>} />
+            <Route path={ROUTE.APP.HOME} element={<PrivateRoute><Home /></PrivateRoute>} />
+            <Route path={ROUTE.APP.MY_LIST_ALBUMS} element={<PrivateRoute><MyListAlbum /></PrivateRoute>} />
+            <Route path={ROUTE.APP.ALBUM_DETAIL} element={<PrivateRoute><Album /></PrivateRoute>} />
+            <Route path={ROUTE.APP.PROFILE} element={<PrivateRoute><Profile /></PrivateRoute>} />
+            <Route path="*" element={<Navigate to={ROUTE.APP.LOGIN} replace/>} />
+          </Router>
+        </AuthProvider>
+      </BrowserRouter>
     );
   }
-
-  return <Outlet />;
-};
-
-export function Routes() {
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Router>
-          <Route path={ROUTE.APP.LOGIN} element={<Login />} />
-          <Route path={ROUTE.APP.SIGN_UP} element={<Signup />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path={ROUTE.APP.HOME} element={<Home />} />
-            <Route path={ROUTE.APP.MY_LIST_ALBUMS} element={<MyListAlbum />} />
-            <Route path={ROUTE.APP.ALBUM_DETAIL} element={<Album />} />
-            <Route path={ROUTE.APP.PROFILE} element={<Profile />} />
-          </Route>
-          <Route path="*" element={<Navigate to={ROUTE.APP.LOGIN} replace/>} />
-        </Router>
-      </AuthProvider>
-    </BrowserRouter>
-  );
-}
