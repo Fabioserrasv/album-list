@@ -4,13 +4,21 @@ import { Form, Input, Button, Card, message } from "antd";
 import { PageLoading } from "../../page-loading/PageLoading";
 import { useAuth } from "../../../hooks/contexts/useAuth";
 
+import {
+	alphanumericInput,
+	confirmInput,
+	minimumCharactersInput,
+	noSpaceInput,
+	requireInput
+} from "../../../utils/rules-antd";
+
 import "./signup.style.css";
 
 type SignUpFormatter = {
 	name: string;
 	email: string;
-	password1: string;
-	password2: string;
+	password: string;
+	confirmPassword: string;
 }
 
 export function Signup() {
@@ -20,7 +28,7 @@ export function Signup() {
 	async function handleUserSignUp(data: SignUpFormatter) {
 		try {
 			setIsLoadingSingUp(true);
-			await signup(data.name, data.email, data.password1, data.password2);
+			await signup(data.name, data.email, data.password, data.confirmPassword);
 		} catch(err) {
 			message.error("Não foi possivel registra o usuario!");
 		} finally {
@@ -45,7 +53,7 @@ export function Signup() {
 						<Form.Item
 							label="Email"
 							name="email"
-							rules={[{ required: true, message: 'Please input your email!' }]}
+							rules={[requireInput('Por favor, preencha a e-mail')]}
 						>
 							<Input />
 						</Form.Item>
@@ -53,27 +61,37 @@ export function Signup() {
 						<Form.Item
 							label="Nome"
 							name="name"
-							rules={[{ required: true, message: 'Please input your username!' }]}
+							rules={[requireInput('Por favor, preencha a nome do usuário')]}
 						>
 							<Input />
 						</Form.Item>
 
-						<Form.Item
+						<Form.Item														
+							name="password"
 							label="Senha"
-							name="password1"
-							rules={[{ required: true, message: 'Please input your password!' }]}
+							rules={[
+								requireInput("Por favor, preencha a senha"),
+								noSpaceInput("A senha não pode conter espaços"),
+								minimumCharactersInput(8, "A senha deve ter no mínimo 8 caracteres"),
+								alphanumericInput("A senha deve conter pelo menos um número, uma letra maiúscula, uma letra minúscula e um caracter especial")
+							]}
 						>
-							<Input.Password />
+							<Input.Password placeholder="Senha" />
 						</Form.Item>
 
 						<Form.Item
-							label="Digite sua senha novamente"
-							name="password2"
-							rules={[{ required: true, message: 'Please input your password!' }]}
+							name="confirmPassword"
+							label="Confirmar Senha"
+							rules={[
+								requireInput("Por favor, preencha o confirmar senha"),
+								noSpaceInput("O confirmar senha não pode conter espaços"),
+								minimumCharactersInput(8, "O confirmar senha deve ter no mínimo 8 caracteres"),
+								alphanumericInput("O confirmar senha deve conter pelo menos um número, uma letra maiúscula, uma letra minúscula e um caracter especial"),
+								confirmInput("password", "Confirmar senha diferente de senha")
+							]}
 						>
-							<Input.Password />
+							<Input.Password placeholder="Confirmar Senha"/>
 						</Form.Item>
-
 
 						<Form.Item wrapperCol={{ offset: 8, span: 16 }}>
 							<Button type="primary" htmlType="submit">
