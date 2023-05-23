@@ -12,6 +12,7 @@ import { ScoreAlbum } from "../../entities/Album";
 import { DYNAMIC_ROUTE } from "../../config/route";
 
 import './my-list-album.style.css';
+import { ProfileAlbum } from "../../components/ProfileAlbum/ProfileAlbum";
 
 export function MyListAlbum() {
 	const [albums, setAlbums] = useState<ScoreAlbum[]>([]);
@@ -64,13 +65,12 @@ export function MyListAlbum() {
 									xl={4}
 								>
 									<Link to={DYNAMIC_ROUTE.APP.ALBUM_DETAIL(artist.name, album.name)}>
-										<Card
-											className="card-album"
-											cover={<ImageDisc src={url} alt="capa do album" />}
-										>
-											<p>{artist.name} - {album.name}</p>
-                      <p>Nota: {score}</p>
-										</Card>
+										<ProfileAlbum
+											name={album.name}
+											artist={artist.name}
+											image={url}
+											score={score}
+										/>
 									</Link>
 								</Col>
 							)

@@ -12,15 +12,19 @@ type PageProps = {
   children: React.ReactNode | React.ReactNode[];
   pageName?: string;
   isLoading?: boolean;
+  withoutPadding?: boolean;
 }
 
-export function Page({ children, isLoading }: PageProps) {
+export function Page({ children, isLoading, withoutPadding }: PageProps) {
   const { logout } = useAuth();
 
   const items1: MenuProps['items'] = [
     {key: 'home', label: <Link to={ROUTE.APP.HOME}>Home</Link>},
-    {key: 'list', label: <Link to={ROUTE.APP.MY_LIST_ALBUMS}>Minha lista</Link>},
+    // {key: 'list', label: <Link to={ROUTE.APP.MY_LIST_ALBUMS}>Minha lista</Link>},
+    {key: 'profile', label: <Link to={ROUTE.APP.PROFILE}>Perfil</Link>},
   ];
+
+  const dataWithoutPadding = withoutPadding ? {'data-padding':'no'} : {}
 
   return (
     <Layout className='container'>
@@ -39,7 +43,7 @@ export function Page({ children, isLoading }: PageProps) {
         <Menu theme={'dark'} mode="horizontal" items={items1} />
       </Header>
 
-      <div className='content'>
+      <div className='content' {...dataWithoutPadding}>
         {!isLoading && children}
       </div>
     </Layout>

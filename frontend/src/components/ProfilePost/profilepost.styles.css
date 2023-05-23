@@ -1,0 +1,31 @@
+.post-content{
+  margin-top: 0;
+  margin-left: 50px;
+}
+
+.card-post{
+  width: 100%;
+  border-radius: 0;
+  height: minmax(200px)
+}
+
+.card-post .ant-card-meta-title{
+  margin-bottom: 0 !important;
+}
+
+.card-post .ant-divider{
+  margin: 20px 0;
+}
+
+.like-deslike-box{
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+.like-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}

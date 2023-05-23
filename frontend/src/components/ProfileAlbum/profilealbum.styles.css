@@ -1,0 +1,53 @@
+span{
+  margin: 0;
+  padding: 0;
+}
+
+.profile-album {
+  width: 200px;
+  height: 200px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.profile-album .album-info {
+  color: white;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(0deg, rgba(2, 0, 36, 0.8351541300113796) 0%, rgba(1, 0, 19, 0.6474790599833684) 48%, rgba(0, 0, 0, 0) 100%);
+  padding-left: 10px;
+}
+
+/* nota */
+.score-info{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  font-weight: bold;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 1px 4px 4px 4px;
+  background-color: rgba(0, 0, 0, .4);
+}
+
+.profile-album .album-info span{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-album .album-info span:first-child{
+  font-weight: bold;
+
+}

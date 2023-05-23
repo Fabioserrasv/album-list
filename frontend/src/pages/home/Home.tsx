@@ -13,6 +13,7 @@ import { getImageExtraLarge } from "../../utils/utils";
 import { DYNAMIC_ROUTE } from "../../config/route";
 
 import './home.style.css';
+import { ProfileAlbum } from "../../components/ProfileAlbum/ProfileAlbum";
 
 
 export function Home() {
@@ -41,7 +42,7 @@ export function Home() {
 						</div>
 					</div>
 					<Divider />
-					<Row gutter={[16, 16]}>
+					<Row gutter={[8, 8]}>
 						{albums.map((album) => {
 							const url = getImageExtraLarge(album.image);
 							return (
@@ -54,12 +55,11 @@ export function Home() {
 									xl={4}
 								>
 									<Link to={DYNAMIC_ROUTE.APP.ALBUM_DETAIL(album.artist, album.name)}>
-										<Card
-											className="card_album"
-											cover={<ImageDisc src={url} alt="capa do album" />}
-										>
-											<p>{album.artist} - {album.name}</p>
-										</Card>
+										<ProfileAlbum
+											name={album.name}
+											artist={album.artist}
+										  image={url}
+										/>
 									</Link>
 								</Col>
 							)

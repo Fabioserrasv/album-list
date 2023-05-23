@@ -9,6 +9,7 @@ export const ROUTE = {
     SIGN_UP: `${basePathname}/signup`,
     SIGN_IN: `${basePathname}/sign-in`,
     LOGIN: `${basePathname}/login`,
+    PROFILE: `${basePathname}/profile`,
   
     ALBUM_DETAIL: `${basePathname}/album/:artist/:album`,
     MY_LIST_ALBUMS: `${basePathname}/my-list-albums`

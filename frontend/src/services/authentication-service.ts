@@ -3,8 +3,10 @@ import { getUserAuthenticationInformation, UserServer, userLogin, userLogout, us
 
 function convertUserServerToUser(user: UserServer): User {
   return {
-    name: user.name,
-    email: user.email
+    name: user.username,
+    email: user.email,
+    aboutMe: user.about_me,
+    profilePic: user.profile_pic
   }
 }
 

@@ -8,6 +8,7 @@ import { Signup } from "./pages/auth/signup/Signup";
 import { Home } from "./pages/home/Home";
 import { MyListAlbum } from "./pages/my-list-album/MyListAlbum";
 import { ROUTE } from "./config/route";
+import { Profile } from "./pages/profile/Profile";
 
 const ProtectedRoute = () => {
   const { authed } = useAuth();
@@ -34,6 +35,7 @@ export function Routes() {
             <Route path={ROUTE.APP.HOME} element={<Home />} />
             <Route path={ROUTE.APP.MY_LIST_ALBUMS} element={<MyListAlbum />} />
             <Route path={ROUTE.APP.ALBUM_DETAIL} element={<Album />} />
+            <Route path={ROUTE.APP.PROFILE} element={<Profile />} />
           </Route>
           <Route path="*" element={<Navigate to={ROUTE.APP.LOGIN} replace/>} />
         </Router>

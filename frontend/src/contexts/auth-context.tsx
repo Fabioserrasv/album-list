@@ -23,11 +23,8 @@ interface AuthContextInterface {
 
 export const AuthContext = createContext({} as AuthContextInterface);
 export const AuthProvider = ({ children }: AuthProviderProps) => {
-	const [user, setUser] = useState<User | null>({
-		email: "teste.da",
-		name: "Leandrp"
-	});
-	const [authed, setAuthed] = useState(true);
+	const [user, setUser] = useState<User | null>(null);
+	const [authed, setAuthed] = useState(false);
 	const [loading, setLoading] = useState(false);
 
 	const location = useLocation()
@@ -35,24 +32,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
 	useEffect(() => {
 		async function fecthUserAuthenticationInformation() {
-			// try {
-			// 	setLoading(true);
-			// 	const user = await AuthenticationService.getUserInformation();
-				
-			// 	setUser(user);
-			// 	setAuthed(true);
-			// } catch (error: any) {
-			// 	if (location.pathname !== ROUTE.APP.LOGIN) {
-			// 		notification.error({
-			// 			message: "Usuário não autenticado",
-			// 			description:
-			// 				"Parece que você não está autenticado. Faça o login novamente",
-			// 		});
-			// 		navigate(ROUTE.APP.LOGIN);
-			// 	}
-			// } finally {
-			// 	setLoading(false);
-			// }
+			try {
+				setLoading(true);
+				const user = await AuthenticationService.getUserInformation();
+				setUser(user);
+				setAuthed(true);
+				navigate(ROUTE.APP.HOME);
+			} catch (error: any) {
+				if (location.pathname !== ROUTE.APP.LOGIN) {
+					notification.error({
+						message: "Usuário não autenticado",
+						description:
+							"Parece que você não está autenticado. Faça o login novamente",
+					});
+					navigate(ROUTE.APP.LOGIN);
+				}
+			} finally {
+				setLoading(false);
+			}
 		}
 
 		fecthUserAuthenticationInformation();
