@@ -10,6 +10,7 @@ import { ROUTE } from "../../../config/route";
 
 
 import './login.style.css';
+import { requireInput } from "../../../utils/rules-antd";
 
 type LoginFormatter = {
 	email: string;
@@ -47,7 +48,7 @@ export function Login() {
 						<Form.Item
 							label="Email"
 							name="email"
-							rules={[{ required: true, message: 'Please input your username!' }]}
+							rules={[requireInput('Por favor, insira seu e-mail')]}
 						>
 							<Input />
 						</Form.Item>
@@ -55,10 +56,7 @@ export function Login() {
 						<Form.Item
 							label="Senha"
 							name="password"
-							rules={[
-								{ required: true, message: 'Please input your password!' },
-								{ min: 8, message: "12"}
-							]}
+							rules={[requireInput("Por favor, insira sua senha")]}
 						>
 							<Input.Password />
 						</Form.Item>
