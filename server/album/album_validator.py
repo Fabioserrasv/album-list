@@ -1,31 +1,24 @@
-from server.validator import *
+from wvalidate import Validate as v
 
-data_score = {
+data_score = v.dict({
     "album":{
-      "name": ValidatorStr(),
-      "url": ValidatorStr(),
-      "image_url": ValidatorStr(),
-      # "tracks": [
-      #   {
-      #     "name": ValidatorStr(),
-      #     "duration": "123",
-      #     "position": 1
-      #   },
-      #   {
-      #     "name": "Track 2",
-      #     "duration": "123",
-      #     "position": 2
-      #   }
-      # ]
+      "name": v.string(),
+      "url": v.string(),
+      "image_url": v.string(),
+      "tracks": v.list(v.dict({
+          "name": v.string(),
+          "duration": v.string(),
+          "position": v.numeric()
+        }))
     },
     "artist": {
-      "name": ValidatorStr(),
-      "image_url": ValidatorStr()
+      "name": v.string(),
+      "image_url": v.string(),
     },
-    "score": ValidatorNumeric()
-}
+    "score": v.numeric()
+})
 
-data_album_info = {
-  "artist": ValidatorStr(),
-  "album": ValidatorStr(),
-}
+data_album_info = v.dict({
+  "artist": v.string(),
+  "album": v.string(),
+})
