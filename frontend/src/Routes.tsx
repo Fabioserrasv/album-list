@@ -10,14 +10,12 @@
   import { Profile } from "./pages/profile/Profile";
   import { PublicRoute } from "./components/route/PublicRoute";
   import { PrivateRoute } from "./components/route/PrivateRoute";
-  import { PageLoading } from "./pages/page-loading/PageLoading";
 
   export function Routes() {
     return (
       <BrowserRouter>
         <AuthProvider>
           <Router>
-            <Route index element={<PageLoading />} />
             <Route path={ROUTE.APP.LOGIN} element={<PublicRoute><Login /></PublicRoute>} />
             <Route path={ROUTE.APP.SIGN_UP} element={<PublicRoute><Signup /></PublicRoute>} />
             <Route path={ROUTE.APP.HOME} element={<PrivateRoute><Home /></PrivateRoute>} />
