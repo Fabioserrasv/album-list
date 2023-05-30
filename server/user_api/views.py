@@ -5,7 +5,10 @@ from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import permissions, status
 from .validations import custom_validation, validate_email, validate_password
-
+from posts.models import Post
+from posts.serializers import convertPosts
+from album.models import Album, UserAlbuns
+from album.serializers import convertUserAlbumList
 UserModel = get_user_model()
 
 class UserRegister(APIView):
@@ -64,10 +67,36 @@ class UserChangePicture(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
 	authentication_classes = (SessionAuthentication,)
 	def post(self, request):
+  #  lembrar validar png e jpg
 		files = request.FILES
 		image = files.get("image")
+		image.name = 'pfp.jpg'
 		request.user.profile_pic = image
 		request.user.save()
 		return Response(status=status.HTTP_200_OK)
 
+class UserProfile(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+	##
+	def get(self, request):
+		data = request.GET
 		
+		user = UserModel.objects.filter(user_id=data['user_id']).last();
+		user_posts = Post.objects.filter(user=user).order_by('-id')[0:10]
+		posts = []
+		for post in user_posts:
+			post.get_likes()
+			posts.append(convertPosts(post))
+		
+		user_albums = UserAlbuns.objects.filter(user=user)		
+  
+		serializer = UserSerializer(request.user)
+
+		result = {
+			**serializer.data,
+			"posts": posts,
+			"albums": [convertUserAlbumList(album.album, album.score) for album in user_albums]
+		}
+
+		return Response(result, status=status.HTTP_200_OK)

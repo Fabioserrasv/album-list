@@ -43,6 +43,7 @@ CORS_ALLOW_CREDENTIALS = True
 # Application definition
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+MEDIA_URL = "/media/"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -55,7 +56,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'user_api.apps.UserApiConfig',
     'album.apps.AlbumConfig',
-    'comments.apps.CommentsConfig'
+    'comments.apps.CommentsConfig',
+    'posts.apps.PostsConfig'
 ]
 
 MIDDLEWARE = [
