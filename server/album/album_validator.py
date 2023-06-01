@@ -7,7 +7,7 @@ data_score = v.dict({
       "image_url": v.string(),
       "tracks": v.list(v.dict({
           "name": v.string(),
-          "duration": v.string(),
+          "duration": v.numeric(min=0),
           "position": v.numeric()
         }))
     },

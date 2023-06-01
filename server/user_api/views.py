@@ -82,7 +82,7 @@ class UserProfile(APIView):
 	def get(self, request):
 		data = request.GET
 		
-		user = UserModel.objects.filter(user_id=data['user_id']).last();
+		user = UserModel.objects.filter(username=data['username']).last();
 		user_posts = Post.objects.filter(user=user).order_by('-id')[0:10]
 		posts = []
 		for post in user_posts:
@@ -91,12 +91,12 @@ class UserProfile(APIView):
 		
 		user_albums = UserAlbuns.objects.filter(user=user)		
   
-		serializer = UserSerializer(request.user)
+		serializer = UserSerializer(user)
 
 		result = {
 			**serializer.data,
 			"posts": posts,
 			"albums": [convertUserAlbumList(album.album, album.score) for album in user_albums]
 		}
-
+  
 		return Response(result, status=status.HTTP_200_OK)
