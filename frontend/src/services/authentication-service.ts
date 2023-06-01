@@ -10,7 +10,6 @@ function convertUserServerToUser(user: UserServer): User {
   }
 }
 
-
 export class AuthenticationService {
   static async getUserInformation(): Promise<User> {
     const user = await getUserAuthenticationInformation();

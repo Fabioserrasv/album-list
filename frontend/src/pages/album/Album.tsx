@@ -7,7 +7,7 @@ import { ImageDisc } from "../../components/ImageDisc/ImageDisc";
 
 import { PageLoading } from "../page-loading/PageLoading";
 
-import { Album as AlbumEntity } from "../../entities/Album";
+import { Album as AlbumEntity } from "../../entities/album";
 
 import { useErrorApi } from "../../hooks/useErrorApi";
 
@@ -26,23 +26,35 @@ type FormatterSendScoreAlbum = {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-function emptyFunction(): void {}
+function emptyFunction(): void { }
 
 export function Album() {
   const { album, artist } = useParams();
-  
+
   const [currentAlbum, setCurrentAlbum] = useState<AlbumEntity>();
   const [isLoadingAlbum, setIsLoadingAlbum] = useState<boolean>(true);
+  
+  const [isLoadingSendAlbumScore, setIsLoadingSendAlbumScore] = useState<boolean>(false);
 
   const [score, setScore] = useState<number>();
   const [isLoadingScore, setIsLoadingScore] = useState<boolean>(true);
 
-  const isLoadingPage = isLoadingAlbum || isLoadingScore;
+  const isLoadingPage = isLoadingAlbum || isLoadingScore || isLoadingSendAlbumScore;
 
   const handleErrorApiAlbumScore = useErrorApi({
     [HttpStatus.NOT_FOUND]: emptyFunction,
     "DEFAULT": () => {
       message.error("Não possivel buscar a nota do Album");
+    }
+  }, []);
+
+  const handleErrorApiSendAlbumScore = useErrorApi({
+    [HttpStatus.NOT_FOUND]: emptyFunction,
+    [HttpStatus.BAD_REQUEST]: (error) => {
+      console.log(error);
+    },
+    "DEFAULT": () => {
+      message.error("Não possivel enviar a nota do Album");
     }
   }, []);
 
@@ -52,7 +64,7 @@ export function Album() {
         setIsLoadingAlbum(true);
         const ralbum = await LastmService.getAlbumInfo(album, artist);
         setCurrentAlbum(ralbum);
-      } catch(err) {
+      } catch (err) {
         message.error("Não possivel carregar as informações do Album");
       } finally {
         setIsLoadingAlbum(false);
@@ -64,7 +76,7 @@ export function Album() {
         setIsLoadingScore(true);
         const score = await AlbumService.getScore(album, artist);
         setScore(score);
-      } catch(err: any) {
+      } catch (err: any) {
         handleErrorApiAlbumScore(err);
       } finally {
         setIsLoadingScore(false);
@@ -82,9 +94,15 @@ export function Album() {
 
   const handleSendScoreAlbum = useCallback(async (data: FormatterSendScoreAlbum) => {
     if (!currentAlbum) return;
-    
-    await AlbumService.sendScore(data.score, currentAlbum);
-    message.success("Nota do Albúm salva!");
+    try {
+      setIsLoadingSendAlbumScore(true);
+      await AlbumService.sendScore(data.score, currentAlbum);
+      message.success("Nota do Albúm salva!");
+    } catch (error: any) {
+      handleErrorApiSendAlbumScore(error)
+    } finally{
+      setIsLoadingSendAlbumScore(false);
+    }
   }, [currentAlbum]);
 
   if (isLoadingPage) {
@@ -103,13 +121,13 @@ export function Album() {
           />
 
           <Form
-						name="basic"
-						labelCol={{ span: 8 }}
-						wrapperCol={{ span: 16 }}
-						style={{ maxWidth: 600 }}
+            name="basic"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
             onFinish={handleSendScoreAlbum}
-						autoComplete="off"
-					>
+            autoComplete="off"
+          >
             <Row className="input-score">
               <Col span={12}>
                 <Form.Item
@@ -132,7 +150,7 @@ export function Album() {
                 </Button>
               </Col>
             </Row>
-					</Form>
+          </Form>
 
         </div>
         <div className="info">

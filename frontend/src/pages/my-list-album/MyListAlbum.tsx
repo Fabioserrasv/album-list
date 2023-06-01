@@ -8,7 +8,7 @@ import { PageLoading } from "../page-loading/PageLoading";
 
 import { AlbumService } from "../../services/album-service";
 
-import { ScoreAlbum } from "../../entities/Album";
+import { ScoreAlbum } from "../../entities/album";
 import { DYNAMIC_ROUTE } from "../../config/route";
 
 import './my-list-album.style.css';

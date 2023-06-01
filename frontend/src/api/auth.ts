@@ -1,6 +1,5 @@
 import { apiAxios } from "../infra/apiAxios"
 
-
 export type UserServer = {
 	username: string;
 	email: string;

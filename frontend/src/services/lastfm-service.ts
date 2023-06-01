@@ -1,5 +1,5 @@
 import { searchAlbum, Album as AlbumServer, Track as TrackServer, AlbumImage as AlbumImageServer, getAlbumInfo } from "../api/lastfm";
-import { Album, AlbumImage, Track } from "../entities/Album";
+import { Album, AlbumImage, Track } from "../entities/album";
 
 function convertTrackServerToTrack(track: TrackServer): Track {
   return {

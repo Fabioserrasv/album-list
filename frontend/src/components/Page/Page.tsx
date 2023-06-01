@@ -6,7 +6,7 @@ import { Header } from 'antd/es/layout/layout';
 import { useAuth } from '../../hooks/contexts/useAuth';
 
 import './page.styles.css';
-import { ROUTE } from '../../config/route';
+import { DYNAMIC_ROUTE, ROUTE } from '../../config/route';
 
 type PageProps = {
   children: React.ReactNode | React.ReactNode[];
@@ -22,6 +22,8 @@ export function Page({ children, isLoading, withoutPadding }: PageProps) {
     {key: 'home', label: <Link to={ROUTE.APP.HOME}>Home</Link>},
     // {key: 'list', label: <Link to={ROUTE.APP.MY_LIST_ALBUMS}>Minha lista</Link>},
     {key: 'profile', label: <Link to={ROUTE.APP.PROFILE}>Perfil</Link>},
+    {key: 'userProfile', label: <Link to={DYNAMIC_ROUTE.APP.USER_PROFILE("Bateman")}>Perfil AA</Link>},
+
   ];
 
   const dataWithoutPadding = withoutPadding ? {'data-padding':'no'} : {}

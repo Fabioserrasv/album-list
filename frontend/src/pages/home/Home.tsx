@@ -5,7 +5,7 @@ import { Card, Col, Divider, Input, Row } from "antd";
 import { ImageDisc } from "../../components/ImageDisc/ImageDisc";
 import { Page } from "../../components/Page/Page";
 
-import { Album } from "../../entities/Album";
+import { Album } from "../../entities/album";
 
 import { LastmService } from "../../services/lastfm-service";
 

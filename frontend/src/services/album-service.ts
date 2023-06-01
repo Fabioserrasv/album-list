@@ -1,5 +1,5 @@
 import { AlbumServer, sendScoreAlbum, TrackServer, getAlbums as getAlbumsServer, getAlbumInfo } from "../api/album";
-import { Album, ScoreAlbum, Track } from "../entities/Album";
+import { Album, ScoreAlbum, Track } from "../entities/album";
 import { getImageExtraLarge } from "../utils/utils";
 
 function convertTrackToTrackServer(track: Track): TrackServer {
@@ -28,7 +28,7 @@ function convertFormatterSendScoreAlbumToAlbumServer(score: number, album: Album
   }
 }
 
-function convertAlbumServerToScoreAlbum({
+export function convertAlbumServerToScoreAlbum({
   album,
   artist,
   score

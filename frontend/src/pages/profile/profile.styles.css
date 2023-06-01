@@ -66,8 +66,9 @@
   height: minmax(100px);
   /* background: #111111; */
   padding: 3rem;
-  display: grid;
-  row-gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   flex: 1 1 0;
   width: 0;
 }

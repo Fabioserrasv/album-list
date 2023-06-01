@@ -1,23 +1,28 @@
-import { PUBLIC_URL } from "./env"
+import { PUBLIC_URL, API_URL } from "./env"
 
-const url = new URL(PUBLIC_URL)
-const basePathname = url.pathname === "/" ? "" : url.pathname;
+const urlApp = new URL(PUBLIC_URL)
+const basePathnameApp = urlApp.pathname === "/" ? "" : urlApp.pathname;
 
 export const ROUTE = {
   APP: {
-    HOME: `${basePathname}/home`,
-    SIGN_UP: `${basePathname}/signup`,
-    SIGN_IN: `${basePathname}/sign-in`,
-    LOGIN: `${basePathname}/login`,
-    PROFILE: `${basePathname}/profile`,
-  
-    ALBUM_DETAIL: `${basePathname}/album/:artist/:album`,
-    MY_LIST_ALBUMS: `${basePathname}/my-list-albums`
+    HOME: `${basePathnameApp}/home`,
+    SIGN_UP: `${basePathnameApp}/signup`,
+    SIGN_IN: `${basePathnameApp}/sign-in`,
+    LOGIN: `${basePathnameApp}/login`,
+    PROFILE: `${basePathnameApp}/profile`,
+    USER_PROFILE: `${basePathnameApp}/profile/:username`,
+
+    ALBUM_DETAIL: `${basePathnameApp}/album/:artist/:album`,
+    MY_LIST_ALBUMS: `${basePathnameApp}/my-list-albums`
   }
 }
 
 export const DYNAMIC_ROUTE = {
   APP: {
-    ALBUM_DETAIL: (artist: string, album: string) => `${basePathname}/album/${artist}/${album}`
+    ALBUM_DETAIL: (artist: string, album: string) => `${basePathnameApp}/album/${artist}/${album}`,
+    USER_PROFILE: (username: string) => `${basePathnameApp}/profile/${username}`
+  },
+  API: {
+    PROFILE_PICTURE: (path: string) => `${API_URL}${path}`
   }
 }

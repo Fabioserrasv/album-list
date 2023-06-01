@@ -6,7 +6,8 @@
 .card-post{
   width: 100%;
   border-radius: 0;
-  height: minmax(200px)
+  height: min-content;
+  max-height: (250px);
 }
 
 .card-post .ant-card-meta-title{
