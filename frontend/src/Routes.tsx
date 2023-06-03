@@ -1,5 +1,4 @@
-import { Routes as Router, Route, BrowserRouter, Navigate } from "react-router-dom";
-import { AuthProvider } from "./contexts/auth-context";
+import { Routes as Router, Route, Navigate } from "react-router-dom";
 import { Album } from "./pages/album/Album";
 
 import { Login } from "./pages/auth/login/Login";
@@ -14,19 +13,15 @@ import { UserProfile } from "./pages/profile/UserProfile";
 
 export function Routes() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Router>
-          <Route path={ROUTE.APP.LOGIN} element={<PublicRoute><Login /></PublicRoute>} />
-          <Route path={ROUTE.APP.SIGN_UP} element={<PublicRoute><Signup /></PublicRoute>} />
-          <Route path={ROUTE.APP.HOME} element={<PrivateRoute><Home /></PrivateRoute>} />
-          <Route path={ROUTE.APP.MY_LIST_ALBUMS} element={<PrivateRoute><MyListAlbum /></PrivateRoute>} />
-          <Route path={ROUTE.APP.ALBUM_DETAIL} element={<PrivateRoute><Album /></PrivateRoute>} />
-          <Route path={ROUTE.APP.PROFILE} element={<PrivateRoute><AuthedUserProfile /></PrivateRoute>} />
-          <Route path={ROUTE.APP.USER_PROFILE} element={<PrivateRoute><UserProfile /></PrivateRoute>} />
-          <Route path="*" element={<Navigate to={ROUTE.APP.LOGIN} replace />} />
-        </Router>
-      </AuthProvider>
-    </BrowserRouter>
+    <Router>
+      <Route path={ROUTE.APP.LOGIN} element={<PublicRoute><Login /></PublicRoute>} />
+      <Route path={ROUTE.APP.SIGN_UP} element={<PublicRoute><Signup /></PublicRoute>} />
+      <Route path={ROUTE.APP.HOME} element={<PrivateRoute><Home /></PrivateRoute>} />
+      <Route path={ROUTE.APP.MY_LIST_ALBUMS} element={<PrivateRoute><MyListAlbum /></PrivateRoute>} />
+      <Route path={ROUTE.APP.ALBUM_DETAIL} element={<PrivateRoute><Album /></PrivateRoute>} />
+      <Route path={ROUTE.APP.PROFILE} element={<PrivateRoute><AuthedUserProfile /></PrivateRoute>} />
+      <Route path={ROUTE.APP.USER_PROFILE} element={<PrivateRoute><UserProfile /></PrivateRoute>} />
+      <Route path="*" element={<Navigate to={ROUTE.APP.LOGIN} replace />} />
+    </Router>
   );
 }

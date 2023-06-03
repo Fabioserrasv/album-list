@@ -5,7 +5,5 @@ export function useErrorApi(
   errorOptions: ErrorOptionsApi,
   deps?: React.DependencyList
 ) {
-  return useMemo(() => {
-    return errorApi(errorOptions)
-  }, deps);
+  return useMemo(() => errorApi(errorOptions), deps);
 }

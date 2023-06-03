@@ -1,0 +1,32 @@
+.comment-content{
+  margin-top: 0;
+  margin-left: 50px;
+}
+
+.card-comment{
+  width: 100%;
+  border-radius: 0;
+  height: min-content;
+  max-height: (250px);
+}
+
+.card-comment .ant-card-meta-title{
+  margin-bottom: 0 !important;
+}
+
+.card-comment .ant-divider{
+  margin: 20px 0;
+}
+
+.like-deslike-box{
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+.like-box{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}

@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom"
 import { Col, Row, InputNumber, Form, Button, message } from "antd";
 
@@ -21,6 +21,13 @@ import { HttpStatus } from "../../utils/http-status";
 
 import "./album.styles.css";
 
+import { AlbumCommentService } from "../../services/album-comment-service";
+import { createComments } from "../../components/Comments/Comments";
+import { ID } from "../../entities/app-types";
+import { Comment } from "../../entities/comment";
+
+
+
 type FormatterSendScoreAlbum = {
   score: number;
 }
@@ -39,7 +46,9 @@ export function Album() {
   const [score, setScore] = useState<number>();
   const [isLoadingScore, setIsLoadingScore] = useState<boolean>(true);
 
-  const isLoadingPage = isLoadingAlbum || isLoadingScore || isLoadingSendAlbumScore;
+  const [comments, setComments] = useState<Comment[]>([])
+
+  const isLoadingPage = isLoadingAlbum || isLoadingScore;
 
   const handleErrorApiAlbumScore = useErrorApi({
     [HttpStatus.NOT_FOUND]: emptyFunction,
@@ -83,9 +92,15 @@ export function Album() {
       }
     }
 
+    async function getAlbumComments(album: string, artist: string) {
+      const comments = await AlbumCommentService.getCommentsBy(album, artist);
+      setComments(comments);
+    }
+
     if (album && artist) {
       getInfo(album, artist);
       getScoreAlbum(album, artist);
+      getAlbumComments(album, artist);
     } else {
       setIsLoadingAlbum(false);
       setIsLoadingScore(false);
@@ -105,6 +120,24 @@ export function Album() {
     }
   }, [currentAlbum]);
 
+  const AlbumComments = useMemo(() => {
+    return createComments({
+      onAddComment: async (commentParentId: ID | null, text: string) => {
+        return await AlbumCommentService.add(
+          album!,
+          artist!,
+          commentParentId,
+          text
+        );
+      },
+      onInteraction: async () => {
+        console.log()
+      }
+    })
+  }, [album, artist]);
+
+  
+
   if (isLoadingPage) {
     return (
       <PageLoading />
@@ -112,58 +145,62 @@ export function Album() {
   }
 
   return (
-    <Page>
-      <div className="album_info_grid">
-        <div className="foto">
-          <ImageDisc
-            src={getImageExtraLarge(currentAlbum?.image || {})}
-            alt=""
-          />
+    <>
+      {isLoadingSendAlbumScore && <PageLoading inOtherPage />}
+      <Page>
+        <div className="album_info_grid">
+          <div className="foto">
+            <ImageDisc
+              src={getImageExtraLarge(currentAlbum?.image || {})}
+              alt=""
+              />
 
-          <Form
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            onFinish={handleSendScoreAlbum}
-            autoComplete="off"
-          >
-            <Row className="input-score">
-              <Col span={12}>
-                <Form.Item
-                  name="score"
-                  rules={[{ required: true, message: 'Por favor selecione um nota!' }]}
-                  style={widthOneHundredPercent}
-                  initialValue={score}
-                >
-                  <InputNumber
+            <Form
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              style={{ maxWidth: 600 }}
+              onFinish={handleSendScoreAlbum}
+              autoComplete="off"
+              >
+              <Row className="input-score">
+                <Col span={12}>
+                  <Form.Item
+                    name="score"
+                    rules={[{ required: true, message: 'Por favor selecione um nota!' }]}
                     style={widthOneHundredPercent}
-                    placeholder="Nota"
-                    min={0}
-                    max={10}
-                  />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Button type="primary" htmlType="submit">
-                  Enviar
-                </Button>
-              </Col>
+                    initialValue={score}
+                    >
+                    <InputNumber
+                      style={widthOneHundredPercent}
+                      placeholder="Nota"
+                      min={0}
+                      max={10}
+                      />
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Button type="primary" htmlType="submit">
+                    Enviar
+                  </Button>
+                </Col>
+              </Row>
+            </Form>
+
+          </div>
+          <div className="info">
+            <Row gutter={[16, 16]}>
+              {currentAlbum?.tracks?.map((track) => (
+                <Col span={24} key={track.name}>
+                  {track.name}
+                </Col>
+              ))}
             </Row>
-          </Form>
+          </div>
 
         </div>
-        <div className="info">
-          <Row gutter={[16, 16]}>
-            {currentAlbum?.tracks?.map((track) => (
-              <Col span={24} key={track.name}>
-                {track.name}
-              </Col>
-            ))}
-          </Row>
-        </div>
-
-      </div>
-    </Page>
+        <AlbumComments comments={comments} />
+      </Page>
+    </>
   )
 }

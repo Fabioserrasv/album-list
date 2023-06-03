@@ -1,0 +1,14 @@
+.comment {
+  margin: 10px;
+  border-left: 1px dashed #bbbbbb;
+}
+
+.comment .card-comment {
+  margin-left: -2px;
+  
+}
+
+.comment .sub-comments {
+  width: 99%;
+  margin-left: 3%;
+}
