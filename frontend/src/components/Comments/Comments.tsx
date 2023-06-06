@@ -38,6 +38,12 @@ type CreateCommentsProps = {
 	onInteraction(commentId: ID, interaction: CommentSimplifyInteraction): Promise<void>;
 }
 
+function convertInteraction(intention: CommentEntity["intention"]): CommentSimplifyInteraction|null{
+	if (intention === 0) return null;
+
+	return intention === 1 ? "LIKE" : "DESLIKE";
+}
+
 export function createComments({
 	onAddComment,
 	onInteraction
@@ -54,9 +60,9 @@ export function createComments({
 				text: comment.text,
         user: {
           username: comment.username,
-          userPic: "12", 
+          userPic: comment.userPic || "", 
         },
-				interaction: null,
+				interaction: convertInteraction(comment.intention),
 				replies: comment.replies.map(reply => reply.id)
 			});
 
@@ -104,10 +110,12 @@ export function createComments({
 			});
 		}, [commentId, comment?.replies]);
 
-    const handleToggleInteraction = useCallback((interaction: CommentSimplifyInteraction) => {
+    const handleToggleInteraction = useCallback(async (interaction: CommentSimplifyInteraction) => {
       if (!comment?.user) {
         return;
       }
+
+			await onInteraction(comment.id, interaction)
 
 			commentDB.instance.update(commentId, {
 				interaction: comment.interaction === interaction ? null : interaction

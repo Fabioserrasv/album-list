@@ -42,15 +42,15 @@ export function CardComment({
         title={username}
         description="1d atrás"
       />
-      <Button
-        onClick={onReply}
-        type='text'
-      >
-        Responder
-      </Button>
       <Divider />
       <p className='comment-content'>{text}</p>
       <div className='like-deslike-box'>
+      <Button
+        onClick={onReply}
+        type='link'
+      >
+        Responder
+      </Button>
         <div className='like-box'>
           <Button onClick={onLike} type={interaction === "LIKE" ? "link" : "text"}>
             <LikeOutlined />

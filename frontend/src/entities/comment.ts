@@ -8,4 +8,5 @@ export type Comment = {
   likes: number;
   deslikes: number;
   replies: Comment[];
+  intention: -1 | 0 | 1;
 }

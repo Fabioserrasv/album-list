@@ -5,6 +5,8 @@ import { CloseOutlined } from "@ant-design/icons";
 import { requireInput } from "../../utils/rules-antd";
 import { useCallback, useEffect, useState } from "react";
 
+import './input-comment.styles.css';
+
 type FormInputComment = {
   "comment-text": string;
 }
@@ -34,15 +36,18 @@ export function InputComment({
       await onAddComment(data["comment-text"]);
 
       setSendCommentStatus("READY");
+      refForm.resetFields();
+
       onCancel?.();
-    } catch(err: any) {
+    } catch (err: any) {
       setSendCommentStatus("ERROR");
     }
   }, [onAddComment])
- 
+
   return (
-    <div style={{ display: isOpen ? "block" : "none"}}>
+    <div style={{ display: isOpen ? "block" : "none" }}>
       <Form
+        className="form-comment"
         form={refForm}
         onFinish={handleSubmit}
       >
@@ -51,20 +56,23 @@ export function InputComment({
           rules={[
             requireInput("Por favor, digite o commentario...")
           ]}
-          >
+          noStyle
+        >
           <TextArea
-            showCount
-            maxLength={100}
+            className="input-comment-text"
+            maxLength={500}
             placeholder="Digite seu commentario"
           />
         </Form.Item>
 
-        <Button htmlType="submit" type="primary">Enviar</Button>
-        {onCancel && (
-          <Button type="text" danger onClick={onCancel}>
-            <CloseOutlined />
-          </Button>
-        )}
+        <div className="div-buttons">
+          {onCancel && (
+            <Button type="text" danger onClick={onCancel}>
+              <CloseOutlined />
+            </Button>
+          )}
+          <Button htmlType="submit" type="primary">Enviar</Button>
+        </div>
       </Form>
     </div>
   )

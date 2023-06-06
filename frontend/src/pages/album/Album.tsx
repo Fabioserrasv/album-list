@@ -130,9 +130,7 @@ export function Album() {
           text
         );
       },
-      onInteraction: async () => {
-        console.log()
-      }
+      onInteraction: AlbumCommentService.setInteraction
     })
   }, [album, artist]);
 

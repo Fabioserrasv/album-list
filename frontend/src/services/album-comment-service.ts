@@ -1,33 +1,19 @@
 
+import { AlbumCommentServer, addAlbumComment, putAlbumCommentLike } from "../api/album-comment";
+import { getAlbumComments } from "../api/album-comment";
 import { ID } from "../entities/app-types";
 import { Comment } from "../entities/comment";
 
-const characters ='ABCDEFGH     IJKLMNOPQRSTUVWXY       Zabcdefghij      klmnopqrstuvwx     yz0123456789';
-
-export function generateString(length: number) {
-  let result = '';
-  const charactersLength = characters.length;
-  for ( let i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-
-  return result;
-}
-
-export function getRandomInt(min: number, max: number) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-
-export function generateComment(comment?: Partial<Comment>): Comment {
+export function convertAlbumCommentServerToComment(comment: AlbumCommentServer): Comment {
   return {
-    id: comment?.id || (Date.now() - getRandomInt(100, 2000)),
-    username: comment?.username || generateString(getRandomInt(5, 20)),
-    text: comment?.text || generateString(getRandomInt(20, 500)),
-    replies: comment?.replies || [],
-    userPic: null,
-    deslikes: comment?.deslikes || getRandomInt(5, 20),
-    likes: comment?.likes || getRandomInt(5, 20)
+    id: comment?.id,
+    username: comment.user.username,
+    text: comment.text,
+    replies: comment.descendents.map(convertAlbumCommentServerToComment),
+    userPic: comment.user.profile_pic,
+    deslikes: comment.deslikes,
+    likes: comment.likes,
+    intention: comment.intention
   }
 }
 
@@ -35,36 +21,31 @@ type Interaction = 'LIKE' | "DESLIKE";
 
 export class AlbumCommentService {
   static async add(
-    _album: string,
-    _artist: string,
-    _commentParentId: ID | null,
+    album: string,
+    artist: string,
+    commentParentId: ID | null,
     text: string
   ): Promise<Comment> {
-    return generateComment({
-      username: "text",
-      text
-    })
+    const comment = await addAlbumComment(
+      artist,
+      album,
+      text,
+      (commentParentId === null ? null : Number(commentParentId))
+    );
+    return convertAlbumCommentServerToComment(comment)
   }
 
   static async getCommentsBy(
-    _album: string,
-    _artist: string
+    album: string,
+    artist: string
   ): Promise<Comment[]> {
-    return [
-      generateComment(),
-      generateComment({ replies: [
-        generateComment({ replies: [
-          generateComment(),
-          generateComment({ replies: Array(10).fill(null).map((_, i) => generateComment({ id: i }))}),
-        ]}),
-        generateComment(),
-      ]}),
-    ]
-    
+    const comments = await getAlbumComments(artist, album)
+
+    return comments.map(convertAlbumCommentServerToComment)
   }
 
-
-  static async setInteraction(_commentId: ID, _interaction: Interaction) {
-    console.log("foi")
+  static async setInteraction(commentId: ID, interaction: Interaction) {
+    console.log('chegou')
+    await putAlbumCommentLike(Number(commentId), interaction.toLowerCase() as "like" | "deslike")
   }
 }
