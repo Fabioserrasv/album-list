@@ -11,12 +11,19 @@ class AlbumComment(models.Model):
   context = models.ForeignKey("self", null=True, blank=True, related_name="children", on_delete=models.CASCADE)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   
-  def get_tree(self):
+  def get_tree(self, user):
     self.descendents = list(self.children.all())
     self.likes = self.comment_children.filter(type=AlbumCommentLikes.TypeLike.UP_LIKE).count()
     self.deslikes = self.comment_children.filter(type=AlbumCommentLikes.TypeLike.DOWN_LIKE).count()
+    user_comment = self.comment_children.filter(user=user).last();
+    
+    if not user_comment:
+      self.intention = 0
+    else:
+      self.intention = user_comment.type
+      
     for child in self.descendents:
-      child.get_tree()
+      child.get_tree(user)
 
 class AlbumCommentLikes(models.Model):
   class TypeLike(models.IntegerChoices):
@@ -35,12 +42,19 @@ class PostComment(models.Model):
   context = models.ForeignKey("self", null=True, blank=True, related_name="children", on_delete=models.CASCADE)
   user = models.ForeignKey(User, on_delete=models.CASCADE)
   
-  def get_tree(self):
+  def get_tree(self, user):
     self.descendents = list(self.children.all())
     self.likes = self.comment_children.filter(type=PostCommentLikes.TypeLike.UP_LIKE).count()
     self.deslikes = self.comment_children.filter(type=PostCommentLikes.TypeLike.DOWN_LIKE).count()
+    user_comment = self.comment_children.filter(user=user).last();
+    
+    if not user_comment:
+      self.intention = 0
+    else:
+      self.intention = user_comment.type
+      
     for child in self.descendents:
-      child.get_tree()
+      child.get_tree(user)
 
 class PostCommentLikes(models.Model):
   class TypeLike(models.IntegerChoices):

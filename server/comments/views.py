@@ -26,8 +26,9 @@ class CreateAlbumComment(APIView):
 
     comment = AlbumComment(text=data['text'], context=context,  album=album, user=request.user)
     comment.save()
+    comment.get_tree(request.user)
     
-    return Response(data, status=status.HTTP_200_OK)
+    return Response(convertComments(comment), status=status.HTTP_200_OK)
 
 class ListAlbumComments(APIView):
   permission_classes = (permissions.IsAuthenticated,)
@@ -44,7 +45,7 @@ class ListAlbumComments(APIView):
     comments = AlbumComment.objects.filter(album=album, context=None)
 
     for c in comments:
-      c.get_tree()
+      c.get_tree(request.user)
     
     all_comments = [convertComments(x) for x in comments]
     
@@ -52,10 +53,13 @@ class ListAlbumComments(APIView):
 
 
 class PutAlbumLike(APIView):
+  permission_classes = (permissions.IsAuthenticated,)
+  authentication_classes = (SessionAuthentication,)
+  
   @validator(data_put_like)
   def put(self, request):
     data = request.data
-
+    print(data['comment_id'])
     comment = AlbumComment.objects.filter(id=data['comment_id']).last()
     
     if data['like_type']:
@@ -105,7 +109,7 @@ class ListPostComments(APIView):
     comments = PostComment.objects.filter(post=post, context=None)
 
     for c in comments:
-      c.get_tree()
+      c.get_tree(request.user)
     
     all_comments = [convertComments(x) for x in comments]
     
