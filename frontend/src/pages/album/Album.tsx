@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom"
-import { Col, Row, InputNumber, Form, Button, message } from "antd";
+import { Col, Row, InputNumber, Form, Button, message, Avatar } from "antd";
 
 import { Page } from "../../components/Page/Page";
 import { ImageDisc } from "../../components/ImageDisc/ImageDisc";
@@ -25,6 +25,7 @@ import { AlbumCommentService } from "../../services/album-comment-service";
 import { createComments } from "../../components/Comments/Comments";
 import { ID } from "../../entities/app-types";
 import { Comment } from "../../entities/comment";
+import { DYNAMIC_ROUTE } from "../../config/route";
 
 
 
@@ -40,7 +41,7 @@ export function Album() {
 
   const [currentAlbum, setCurrentAlbum] = useState<AlbumEntity>();
   const [isLoadingAlbum, setIsLoadingAlbum] = useState<boolean>(true);
-  
+
   const [isLoadingSendAlbumScore, setIsLoadingSendAlbumScore] = useState<boolean>(false);
 
   const [score, setScore] = useState<number>();
@@ -115,7 +116,7 @@ export function Album() {
       message.success("Nota do Albúm salva!");
     } catch (error: any) {
       handleErrorApiSendAlbumScore(error)
-    } finally{
+    } finally {
       setIsLoadingSendAlbumScore(false);
     }
   }, [currentAlbum]);
@@ -134,7 +135,7 @@ export function Album() {
     })
   }, [album, artist]);
 
-  
+
 
   if (isLoadingPage) {
     return (
@@ -145,14 +146,24 @@ export function Album() {
   return (
     <>
       {isLoadingSendAlbumScore && <PageLoading inOtherPage />}
-      <Page>
+      <Page withoutPadding>
         <div className="album_info_grid">
           <div className="foto">
             <ImageDisc
               src={getImageExtraLarge(currentAlbum?.image || {})}
               alt=""
-              />
+            />
+          </div>
 
+          <div className="info">
+            <h2>{currentAlbum?.name}</h2>
+            <div>
+              <ul>
+                <li><span>Artista:</span>{currentAlbum?.artist}</li>
+                <li><span>Tipo:</span>Album</li>
+                <li><span>Média:</span>10.00</li>
+              </ul>
+            </div>
             <Form
               name="basic"
               labelCol={{ span: 8 }}
@@ -160,7 +171,7 @@ export function Album() {
               style={{ maxWidth: 600 }}
               onFinish={handleSendScoreAlbum}
               autoComplete="off"
-              >
+            >
               <Row className="input-score">
                 <Col span={12}>
                   <Form.Item
@@ -168,13 +179,13 @@ export function Album() {
                     rules={[{ required: true, message: 'Por favor selecione um nota!' }]}
                     style={widthOneHundredPercent}
                     initialValue={score}
-                    >
+                  >
                     <InputNumber
                       style={widthOneHundredPercent}
                       placeholder="Nota"
                       min={0}
                       max={10}
-                      />
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={12}>
@@ -184,20 +195,52 @@ export function Album() {
                 </Col>
               </Row>
             </Form>
-
           </div>
-          <div className="info">
-            <Row gutter={[16, 16]}>
+          <div className="musicas">
+            <h3>Músicas</h3>
+            <ul>
               {currentAlbum?.tracks?.map((track) => (
-                <Col span={24} key={track.name}>
-                  {track.name}
-                </Col>
+                <li key={track.name}>
+                  {track.position} - {track.name}
+                </li>
               ))}
-            </Row>
+            </ul>
           </div>
 
+
+          <div className="atividade">
+            <h4>Atividades Recentes</h4>
+            <div>
+              <div className="item-recente">
+                <div>
+                  <Avatar src={DYNAMIC_ROUTE.API.PROFILE_PICTURE('')} />
+                  <span>Serra</span>
+                </div>
+                <span className="nota">10</span>
+              </div>
+              <div className="item-recente">
+                <div>
+                  <Avatar src={DYNAMIC_ROUTE.API.PROFILE_PICTURE('')} />
+                  <span>Serra</span>
+                </div>
+                <span className="nota">10</span>
+              </div>
+              <div className="item-recente">
+                <div>
+                  <Avatar src={DYNAMIC_ROUTE.API.PROFILE_PICTURE('')} />
+                  <span>Serra</span>
+                </div>
+                <span className="nota">10</span>
+              </div>
+
+            </div>
+          </div>
+
+          <div className="album-comments">
+            <h3>Comentários</h3>
+            <AlbumComments comments={comments} />
+          </div>
         </div>
-        <AlbumComments comments={comments} />
       </Page>
     </>
   )

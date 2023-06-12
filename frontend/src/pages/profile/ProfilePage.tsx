@@ -103,13 +103,14 @@ export function ProfilePage({ username }: ProfilePageProps) {
             </AlbumRow>
             <AlbumRow title='Mais Recentes' extra={<Link to={ROUTE.APP.MY_LIST_ALBUMS}>Ver mais...</Link>}>
               {currentProfile?.albums.map((album) => (
-                <ProfileAlbum
-                  key={album.album.imageUrl}
-                  name={album.album.name}
-                  artist={album.artist.name}
-                  image={album.album.imageUrl}
-                  score={album.score}
-                />
+                <Link to={DYNAMIC_ROUTE.APP.ALBUM_DETAIL(album.artist.name, album.album.name)} key={album.album.imageUrl}>
+                  <ProfileAlbum
+                    name={album.album.name}
+                    artist={album.artist.name}
+                    image={album.album.imageUrl}
+                    score={album.score}
+                  />
+                </Link>
               ))}
             </AlbumRow>
           </div>

@@ -1,10 +1,11 @@
 .album_info_grid {
   display: grid;
-  grid-template-columns: 3fr 4fr;
-  grid-template-rows: repeat(3, auto);
-  grid-template-areas: "foto info"
-                       "foto info"
-                       "foto info";
+  margin: 50px;
+  grid-template-columns: 1fr 2fr 3fr;
+  grid-template-rows: repeat(2, auto);
+  grid-template-areas: "foto info musica"
+                       "ativi comentario comentario";
+   gap: 30px;
 }
 
 .foto {
@@ -13,17 +14,91 @@
 }
 
 .foto > img {
-  width: 100%;
-  max-width: 300px;
+  width: 400px;
 }
 
-
 .info {
-  border-left: #ccc solid 2px;
   grid-area: info;
-  
   text-align: justify;
-  padding: 30px;
+  position: relative;
+}
+
+.info ul{
+  list-style: none;
+  padding: 0;
+  font-size: 1.2rem;
+}
+
+.info ul li span{
+  font-style: italic;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.info form{
+ position: absolute;
+ bottom: 0;
+}
+
+.info h2{
+  margin: 0;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.musicas{
+  grid-area: musica;
+}
+
+.musicas h3,
+.album-comments h3{
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.musicas ul {
+  list-style: none;
+  padding: 0;
+  max-height: 350px;
+  overflow: auto;
+}
+
+.musicas ul li{
+  font-size: 1rem;
+  padding: 5px;
+}
+
+.musicas ul li:nth-child(odd){
+  background-color: #cecece;
+}
+
+.album-comments{
+  grid-area: comentario;
+}
+
+.atividade{
+  grid-area: ativi;
+}
+
+.item-recente:nth-child(odd){
+  background-color: #cecece;
+}
+
+.item-recente{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px 5px 5px;
+}
+
+.item-recente div{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.item-recente .nota{
+  justify-self: end;
 }
 
 .input-score {
