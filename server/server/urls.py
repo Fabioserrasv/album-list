@@ -25,7 +25,8 @@ urlpatterns = [
     path('api/', include('user_api.urls')),
     path('album/', include('album.urls')),
     path('comment/', include('comments.urls')),
-    path('post/', include('posts.urls'))
+    path('post/', include('posts.urls')),
+    path('event/', include('events.urls'))
 ]
 
 # Serving the media files in development mode

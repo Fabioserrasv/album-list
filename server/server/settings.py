@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'user_api.apps.UserApiConfig',
     'album.apps.AlbumConfig',
     'comments.apps.CommentsConfig',
+    'events.apps.EventsConfig',
     'posts.apps.PostsConfig'
 ]
 
