@@ -8,6 +8,6 @@ export function AuthedUserProfile(){
   if(!user) return <></>
 
   return (
-      <ProfilePage username={user.name} />
+    <ProfilePage username={user.name} />
   )
 }

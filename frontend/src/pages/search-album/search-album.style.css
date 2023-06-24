@@ -1,34 +1,30 @@
-.home_grid{
+.search_album_grid{
   display: grid;
-  grid-template-columns: 2fr 4fr 4fr;
+  grid-template-columns: 1fr 6fr 1fr;
   grid-template-rows: repeat(3, auto);
   grid-template-areas: "le m ld"
                        "le m ld"
                        "le m ld";
-  gap: 10px;
 }
 
-.le{
+.search_album_grid .le{
   grid-area: le;
 }
 
-.m{
+.search_album_grid .m{
   grid-area: m;
   height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
-.ld{
+.search_album_grid .ld{
   grid-area: ld;
 }
 
-.card_album{
+.search_album_grid .card_album{
   margin: '0px 5px 0px 5px';
 }
 
-.div_search{
+.search_album_grid .div_search{
   width: 100%;
   display: flex;
   justify-content: end;
@@ -37,8 +33,4 @@
 .div_search > div{
   width: 30%;
   text-align: start;
-}
-
-.ld .ant-card{
-  max-width: 60%;
 }

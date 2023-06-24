@@ -1,28 +1,77 @@
-import { KeyboardEvent, useState } from "react";
-import { Link } from "react-router-dom";
-import { Card, Col, Divider, Input, Row } from "antd";
-
-import { ImageDisc } from "../../components/ImageDisc/ImageDisc";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { Button, Card, Divider, message } from "antd";
 import { Page } from "../../components/Page/Page";
-
-import { Album } from "../../entities/album";
-
-import { LastmService } from "../../services/lastfm-service";
-
-import { getImageExtraLarge } from "../../utils/utils";
-import { DYNAMIC_ROUTE } from "../../config/route";
-
+import { LoadingOutlined } from '@ant-design/icons';
 import './home.style.css';
-import { ProfileAlbum } from "../../components/ProfileAlbum/ProfileAlbum";
+import { PostEditor, RefPostEditor } from "../../components/PostEditor/PostEditor";
+import { Post } from "../../entities/post";
+import { PostService } from "../../services/post-service";
+import { ProfilePost } from "../../components/ProfilePost/ProfilePost";
+import { EventService } from "../../services/event-service";
+import { Event } from "../../entities/event";
+import { EventCard } from "../../components/EventCard/EventCard";
 
 
 export function Home() {
-	const [albums, setalbums] = useState<Album[]>([]);
+	const refPostEditor = useRef<RefPostEditor | null>(null);
+	const [posts, setPosts] = useState<Post[]>([]);
+	const [isLoadingPosts, setIsLoadingPosts] = useState<boolean>(true);
 
-	async function handleSearchAlbum(event: KeyboardEvent<HTMLInputElement>) {
-		const albums = await LastmService.searchAlbum(event.currentTarget.value);
-		setalbums(albums);
-	}
+	const [events, setEvents] = useState<Event[]>([]);
+	const [isLoadingEvents, setIsLoadingEvents] = useState<boolean>(true);
+
+
+	const [isLoadingSendPost, setIsLoadingSendPost] = useState<boolean>(false);
+
+	const handleSendPostToServer = useCallback(async () => {
+		try {
+			setIsLoadingSendPost(true);
+			const postText = refPostEditor.current?.getText() || "";
+
+			const newPost = await PostService.add(postText);
+
+			setPosts(prevPosts => [newPost, ...prevPosts]);
+
+			refPostEditor.current?.clear();
+			message.success("Post criado com sucesso!");
+		} catch (error: any) {
+			console.log(error)
+			message.error("Não possivel carregar os Posts.");
+		} finally {
+			setIsLoadingSendPost(false);
+		}
+	}, []);
+
+	useEffect(() => {
+		async function getPosts() {
+			try {
+				setIsLoadingPosts(true);
+				const posts = await PostService.getAllHomePosts();
+				setPosts(posts);
+			} catch (err) {
+				message.error("Não possivel carregar os Posts.");
+			} finally {
+				setIsLoadingPosts(false);
+			}
+		}
+
+
+		async function getEvents() {
+			try {
+				setIsLoadingEvents(true);
+				const events = await EventService.getCloseEvents();
+				setEvents(events);
+			} catch (err) {
+				console.log(err)
+				message.error("Não possivel carregar os Events.");
+			} finally {
+				setIsLoadingEvents(false);
+			}
+		}
+
+		getEvents();
+		getPosts();
+	}, [])
 
 	return (
 		<Page>
@@ -32,42 +81,53 @@ export function Home() {
 
 
 				<div className="m">
-					<div className="div_search">
-						<div>
-							<h3>Pesquisar Album</h3>
-							<Input.Search
-								style={{ margin: '0px 0px 10px 0px' }}
-								onPressEnter={handleSearchAlbum}
-							/>
-						</div>
-					</div>
-					<Divider />
-					<Row gutter={[8, 8]}>
-						{albums.map((album) => {
-							const url = getImageExtraLarge(album.image);
-							return (
-								<Col 
-									key={album.url}
-									xs={24}
-									sm={12}
-									md={8}
-									lg={6}
-									xl={4}
-								>
-									<Link to={DYNAMIC_ROUTE.APP.ALBUM_DETAIL(album.artist, album.name)}>
-										<ProfileAlbum
-											name={album.name}
-											artist={album.artist}
-										  image={url}
-										/>
-									</Link>
-								</Col>
-							)
-						})}
-					</Row>
+					{isLoadingPosts && (
+						<>Loading...</>
+					)}
+
+					{!isLoadingPosts && (
+						<>
+							<Button
+								onClick={handleSendPostToServer}
+								disabled={isLoadingSendPost}
+							>
+								{isLoadingSendPost && <LoadingOutlined />} Criar Post
+							</Button>
+							<PostEditor ref={refPostEditor} />
+							{posts.map(post => (
+								<ProfilePost
+									key={post.id}
+									post={post}
+									profilePic={post.user.profilePic}
+								/>
+							))}
+						</>
+					)}
+
 
 				</div>
-				<div className="ld"></div>
+				<div className="ld">
+					<Card>
+						<h2>Eventos</h2>
+
+						{isLoadingEvents && (
+							<>Loading...</>
+						)}
+
+						{!isLoadingEvents && (
+							<>
+								{
+									events.map(eventObj => (
+										<div key={eventObj.name}>
+											<EventCard event={eventObj} />
+											<Divider />
+										</div>
+									))
+								}
+							</>
+						)}
+					</Card>
+				</div>
 			</div>
 		</Page >
 	)

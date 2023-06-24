@@ -1,4 +1,5 @@
 import { Button, Card, Divider } from 'antd';
+import { Link } from 'react-router-dom';
 import Avatar from 'antd/es/avatar/avatar';
 import { LikeOutlined, DislikeOutlined } from '@ant-design/icons';
 import Meta from 'antd/es/card/Meta';
@@ -37,11 +38,13 @@ export function CardComment({
       className='card-comment'
       bordered={false}
     >
-      <Meta
-        avatar={<Avatar src={DYNAMIC_ROUTE.API.PROFILE_PICTURE(userPic || '')} />}
-        title={username}
-        description="1d atrás"
-      />
+      <Link to={DYNAMIC_ROUTE.APP.USER_PROFILE(username)}>
+        <Meta
+          avatar={<Avatar src={DYNAMIC_ROUTE.API.PROFILE_PICTURE(userPic || '')} />}
+          title={username}
+          description="" // "1d atrás"
+        />
+      </Link>
       <Divider />
       <p className='comment-content'>{text}</p>
       <div className='like-deslike-box'>

@@ -1,0 +1,24 @@
+.event-card{
+  display: flex;
+  flex-direction: row;
+}
+
+.event-details{
+
+}
+
+.event-card h3{
+  padding: 0;
+  margin: 0;
+}
+
+.event-card img{
+  width: 85px;
+  height: 85px;
+  border-radius: 1rem;
+  margin-right: 10px;
+}
+
+.event-time{
+  font-style: italic;
+}

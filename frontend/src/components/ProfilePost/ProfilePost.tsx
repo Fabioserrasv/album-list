@@ -1,6 +1,7 @@
 import { Card, Divider } from 'antd';
+import { Link } from "react-router-dom";
 import Avatar from 'antd/es/avatar/avatar';
-import { LikeOutlined, DislikeOutlined } from '@ant-design/icons';
+// import { LikeOutlined, DislikeOutlined } from '@ant-design/icons';
 import Meta from 'antd/es/card/Meta';
 import './profilepost.styles.css';
 import { Post } from '../../entities/post';
@@ -17,22 +18,24 @@ export function ProfilePost({post, profilePic}: ProfilePostProps) {
       className='card-post'
       bordered={false}
     >
-      <Meta
-        avatar={<Avatar src={DYNAMIC_ROUTE.API.PROFILE_PICTURE(profilePic || '')} />}
-        title={post.user.username}
-        description="1d atrás"
-      />
+      <Link to={DYNAMIC_ROUTE.APP.USER_PROFILE(post.user.username)}>
+        <Meta
+          avatar={<Avatar src={DYNAMIC_ROUTE.API.PROFILE_PICTURE(profilePic || '')} />}
+          title={post.user.username}
+          description="" //"1d atrás"
+        />
+      </Link>
       <Divider />
-      <p className='post-content'>{post.content}</p>
+      <div className='post-content' dangerouslySetInnerHTML={{ __html: post.content }} />
       <div className='like-deslike-box'>
-        <div className='like-box'>
+        {/* <div className='like-box'>
           <LikeOutlined />
           <span>{post.likes}</span>
         </div>
         <div className='like-box'>
           <DislikeOutlined />
           <span>{post.deslikes}</span>
-        </div>
+        </div> */}
       </div>
     </Card>
   )

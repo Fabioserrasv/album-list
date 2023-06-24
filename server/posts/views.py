@@ -21,7 +21,9 @@ class CreatePost(APIView):
     post = Post(text=data['content'], user=request.user)
     post.save()
     
-    return Response(data, status=status.HTTP_200_OK)
+    post.get_likes()
+
+    return Response(convertPosts(post), status=status.HTTP_200_OK)
 
 
 class ListPosts(APIView):
@@ -29,11 +31,7 @@ class ListPosts(APIView):
   authentication_classes = (SessionAuthentication,)
 
   def get(self, request):
-    user_id = request.GET['user_id']
-    user = User.objects.filter(user_id=user_id).last()
-    
-    if user:
-      posts = Post.objects.filter(user=user)
+    posts = Post.objects.all().order_by('-id')[:10]
 
     for p in posts:
       p.get_likes()

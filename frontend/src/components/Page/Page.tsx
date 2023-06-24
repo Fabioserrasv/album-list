@@ -20,10 +20,8 @@ export function Page({ children, isLoading, withoutPadding }: PageProps) {
 
   const items1: MenuProps['items'] = [
     {key: 'home', label: <Link to={ROUTE.APP.HOME}>Home</Link>},
-    // {key: 'list', label: <Link to={ROUTE.APP.MY_LIST_ALBUMS}>Minha lista</Link>},
-    {key: 'profile', label: <Link to={ROUTE.APP.PROFILE}>Perfil</Link>},
-    {key: 'userProfile', label: <Link to={DYNAMIC_ROUTE.APP.USER_PROFILE("Bateman")}>Perfil AA</Link>},
-
+    {key: 'search-album', label: <Link to={ROUTE.APP.SEARCH_ALBUM}>Álbuns</Link>},
+    {key: 'profile', label: <Link to={ROUTE.APP.PROFILE}>Perfil</Link>}
   ];
 
   const dataWithoutPadding = withoutPadding ? {'data-padding':'no'} : {}

@@ -13,7 +13,8 @@ export const ROUTE = {
     USER_PROFILE: `${basePathnameApp}/profile/:username`,
 
     ALBUM_DETAIL: `${basePathnameApp}/album/:artist/:album`,
-    MY_LIST_ALBUMS: `${basePathnameApp}/my-list-albums`
+    MY_LIST_ALBUMS: `${basePathnameApp}/my-list-albums`,
+    SEARCH_ALBUM: `${basePathnameApp}/search-album`
   }
 }
 
