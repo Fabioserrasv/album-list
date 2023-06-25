@@ -15,7 +15,7 @@ export function convertPostServerToPost(post: PostServer): Post {
 }
 
 export class PostService {
-  static async getAllHomePosts(): Promise<Post[]> {
+  static async  getAllHomePosts(): Promise<Post[]> {
     const post = await getHomePosts();
     return post.map(convertPostServerToPost)
   }

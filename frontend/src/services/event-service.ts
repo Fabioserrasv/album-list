@@ -1,4 +1,4 @@
-import { EventServer, getCloseEventServers } from "../api/event";
+import { EventServer, createEvent, getCloseEventServers } from "../api/event";
 import { Event } from "../entities/event";
 
 function convertEventServerToEvent(eventServer: EventServer): Event {
@@ -7,17 +7,34 @@ function convertEventServerToEvent(eventServer: EventServer): Event {
     description: eventServer.description,
     address: eventServer.address,
     city: eventServer.city,
-    datatime: eventServer.datatime,
+    datetime: eventServer.datetime,
     user: {
       username: eventServer.user.username
-    } 
+    }
   }
 }
 
 
 export class EventService {
-  static async getCloseEvents(): Promise<Event[]>  {
+  static async getCloseEvents(): Promise<Event[]> {
     const eventServers = await getCloseEventServers();
     return eventServers.map(convertEventServerToEvent);
+  }
+
+  static async add(
+    name: string,
+    description: string,
+    address: string,
+    city: string,
+    datetime: string
+  ): Promise<Event> {
+    const event = await createEvent(
+      name,
+      description,
+      address,
+      city,
+      datetime
+    );
+    return convertEventServerToEvent(event);
   }
 }

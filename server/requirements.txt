@@ -1,5 +1,6 @@
 django
-djangorestoframework
+djangorestframework
 markdown
 django-filter
 Pillow
+wvalidate

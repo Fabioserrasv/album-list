@@ -5,27 +5,29 @@ export type EventServer = {
   description: string;
   address: string;
   city: string;
-  datatime: string;
+  datetime: string;
   user: {
-    username: string;  
+    username: string;
   } 
 }
 
 
-export async function sendScoreAlbum(
+export async function createEvent(
   name: string,
   description: string,
   address: string,
   city: string,
-  datatime: string
-): Promise<void> {
-	await apiAxios.post("/album/score", {
+  datetime: string
+): Promise<EventServer> {
+	const response = await apiAxios.post("/event/create", {
     name,
     description,
     address,
     city,
-    datatime
+    datetime
   });
+
+  return response.data;
 }
 
 export async function getCloseEventServers(): Promise<EventServer[]> {

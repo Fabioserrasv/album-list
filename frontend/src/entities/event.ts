@@ -3,8 +3,8 @@ export type Event = {
   description: string;
   address: string;
   city: string;
-  datatime: string;
+  datetime: string;
   user: {
-    username: string;  
+    username: string;
   } 
 }

@@ -23,12 +23,12 @@ class CreateEvent(APIView):
       description=data['description'],
       address=data['address'],
       city=data['city'],
-      datetime=data['datetime'],
+      datetime=datetime.strptime(data['datetime'], "%Y-%m-%dT%H:%M"),
       user=request.user
     )
     event.save()
     
-    return Response(data, status=status.HTTP_201_CREATED)
+    return Response(convertEvent(event), status=status.HTTP_201_CREATED)
   
   
 class ListCloseEvent(APIView):
@@ -39,7 +39,7 @@ class ListCloseEvent(APIView):
     now = datetime.now()
     now_plus_ten_days = now + timedelta(days=10)
           
-    data_events = Event.objects.filter(datetime__gt=now, datetime__lt=now_plus_ten_days)
+    data_events = Event.objects.filter(datetime__gt=now, datetime__lt=now_plus_ten_days).order_by('-datetime')[:10]
 
     events = [convertEvent(event) for event in data_events]
     return Response(events, status=status.HTTP_200_OK)

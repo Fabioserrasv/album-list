@@ -8,7 +8,7 @@ def convertEvent(data):
     "description": data.description,
     "address": data.address,
     "city": data.city,
-    "datatime": data.datetime.strftime("%Y-%m-%dT%H:%M"),
+    "datetime": data.datetime.strftime("%Y-%m-%dT%H:%M"),
     "user": {
       "username": user.data.get("username", "") 
     } 

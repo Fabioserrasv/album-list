@@ -1,10 +1,24 @@
 .event-card{
   display: flex;
   flex-direction: row;
+  gap: 0.6rem;
+
+  margin-bottom: 10px;
+  border-bottom: 1px solid #cecece;
+
+  align-items: start;
 }
 
 .event-details{
+  width: 100%;
+  text-align: start;
+}
 
+.event-card svg {
+  --_img-size: 40px;
+  margin-top: 5px;
+  width: var(--_img-size);
+  height: var(--_img-size);
 }
 
 .event-card h3{
@@ -12,13 +26,9 @@
   margin: 0;
 }
 
-.event-card img{
-  width: 85px;
-  height: 85px;
-  border-radius: 1rem;
-  margin-right: 10px;
-}
-
 .event-time{
   font-style: italic;
+}
+
+.event-card p{
 }

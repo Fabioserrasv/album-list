@@ -2,13 +2,17 @@ import { useCallback } from "react";
 import { DatePicker, Form, Input } from "antd";
 import { Dayjs } from 'dayjs';
 
+import { Event } from '../../entities/event';
+
 import { FormModal } from "./FormModal";
 import { requireInput } from "../../utils/rules-antd";
+import { EventService } from "../../services/event-service";
 
 
 type EventFormModalProps = {
   isOpen: boolean;
   onClose(): void;
+  onAlfterAddEvent(event: Event): void;
 }
 
 type FormEvent = {
@@ -21,13 +25,23 @@ type FormEvent = {
 
 export function EventFormModal({
   isOpen,
-  onClose
+  onClose,
+  onAlfterAddEvent
 }: EventFormModalProps) {
 
   const handleSubmitNewEvent = useCallback(async (data: FormEvent) => {
-    console.log("datetime", data.datetime.format("%Y-%m-%dT%H:%M"))
-  }, []);
+    console.log("datetime", )
 
+    const newEvent = await EventService.add(
+      data.name,
+      data.description,
+      data.address,
+      data.city,
+      data.datetime.format("YYYY-MM-DDTHH:mm")
+    )
+
+    onAlfterAddEvent(newEvent);
+  }, [onAlfterAddEvent, onClose]);
 
   return (
     <FormModal
@@ -39,6 +53,7 @@ export function EventFormModal({
       okButtonProps={{ htmlType: "submit" }}
       centered
       onFinish={handleSubmitNewEvent}
+      onAfterFinish={onClose}
     >
       <Form.Item
         label="Nome"
