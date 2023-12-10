@@ -9,6 +9,10 @@ from posts.models import Post
 from posts.serializers import convertPosts
 from album.models import Album, UserAlbuns
 from album.serializers import convertUserAlbumList
+
+from django.middleware.csrf import get_token
+from django.http import JsonResponse
+
 UserModel = get_user_model()
 
 class UserRegister(APIView):
@@ -100,3 +104,13 @@ class UserProfile(APIView):
 		}
   
 		return Response(result, status=status.HTTP_200_OK)
+	
+
+class CSRFView(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
+
+	##
+	def get(self, request):
+		csrf_token = get_token(request)
+		return JsonResponse({'csrftoken': csrf_token})

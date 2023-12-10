@@ -7,5 +7,6 @@ urlpatterns = [
 	path('logout', views.UserLogout.as_view(), name='logout'),
 	path('user', views.UserView.as_view(), name='user'),
 	path('profile_pic', views.UserChangePicture.as_view(), name='profile_pic'),
-	path('profile', views.UserProfile.as_view(), name='profile')
+	path('profile', views.UserProfile.as_view(), name='profile'),
+  path('csrftoken', views.CSRFView.as_view(), name='csrftoken')
 ]
